@@ -1,0 +1,14 @@
+line sensor
+prox sensor (ultra sound)
+limit switch (loading)
+lights (tell if in range)
+when we have a ball (color?)
+
+string potentiometer
+
+wheel encoders
+
+gyro 
+accelerometer (maybe)
+
+camera servos
