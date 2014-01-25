@@ -65,13 +65,14 @@ public class OI {
     }
     
     public double getDriveLeftVerticalAxis() {
+        System.out.println("in = " + -driverController.getRawAxis(2));
         return deadZoneMap(-driverController.getRawAxis(2));
     }     
     public double getDriveLeftHorizontalAxis() {
         return deadZoneMap(driverController.getRawAxis(1));
     }
 
-    private static final double deadZone = 0.10;
+    private static final double deadZone = 0.20;
     private static final double scale = 1.0/(1.0 - deadZone);
     
     /**
@@ -79,7 +80,6 @@ public class OI {
      */
     private double deadZoneMap(double in) {
         double out = 0.0;
-
         if(in > deadZone) {
             out = (in - deadZone) * scale;
         } else if(in < -deadZone) {

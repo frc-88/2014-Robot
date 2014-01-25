@@ -33,16 +33,23 @@ public class Drive extends Subsystem {
     Solenoid m_LShifter;
     Solenoid m_RShifter;
     
+    double last_speedL = 0.0;
+    double last_speedR = 0.0;
+    private double m_leftResetPosn = 0.0;
+    private double m_rightResetPosn = 0.0;
+    private static final double DISTANCE_PER_REVOLUTION = 19.25;
+
+    
     public Drive()  {
         
         m_LShifter = new Solenoid(Wiring.rShifter);
         m_RShifter = new Solenoid(Wiring.lShifter);
-        m_LShifter.set(false);
+        m_LShifter.set(true);
         m_RShifter.set(false);
         try {
 
-                leftJag = new CANJaguar(Wiring.leftCANDrive2);
-                leftJag2 = new CANJaguar(Wiring.leftCANDrive);
+                leftJag = new CANJaguar(Wiring.leftCANDrive);
+                leftJag2 = new CANJaguar(Wiring.leftCANDrive2);
                 //leftJag.disableControl();
                 if (leftJag != null) {
                     leftJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
@@ -91,7 +98,7 @@ public class Drive extends Subsystem {
      * Enables ClosedLoop control Driving. It sets it to speed.
      */
     public void enableClosedLoop() {
-        //double position;
+        double position;
         System.out.println("Enabling closed loop control");
         
         if(rightJag2 != null && leftJag != null && rightJag != null) {
@@ -99,18 +106,24 @@ public class Drive extends Subsystem {
                 // set the right motor to closed loop
                 rightJag2.changeControlMode(CANJaguar.ControlMode.kSpeed);
                 rightJag2.setPID(-.5, -0.01, 0.0);
-                rightJag2.enableControl();
+                position = rightJag2.getPosition();
+                rightJag2.enableControl(position);
+
                 rightJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
                 rightJag.setPID(-.5, -0.01, 0.0);
-                rightJag.enableControl();
+                position = rightJag.getPosition();
+                rightJag.enableControl(position);
 
                 // set the left motor to closed loop
                 leftJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
                 leftJag.setPID(-.5, -0.01, 0.0);
-                leftJag.enableControl();
+                position = leftJag.getPosition();
+                leftJag.enableControl(position);
+                
                 leftJag2.changeControlMode(CANJaguar.ControlMode.kSpeed);
                 leftJag2.setPID(-.5, -0.01, 0.0);
-                leftJag2.enableControl();
+                position = leftJag2.getPosition();
+                leftJag2.enableControl(position);
 
                 // set the enable flag
                 m_closedLoop = true;
@@ -157,8 +170,8 @@ public class Drive extends Subsystem {
     }
     
     public void driveTankClosedLoop(double speedLeft, double speedRight) {
-
-
+        
+        
         double maxRPMHighGear = 400;
         double maxRPMLowGear = 160;
         double maxRPM = 0;
@@ -168,13 +181,30 @@ public class Drive extends Subsystem {
         else {
             maxRPM = maxRPMLowGear;
         }
+        double lSpeed = speedLeft * maxRPM;
+        double rSpeed = -speedRight * maxRPM;
+        double RAMP_RATE = 40;
+
+        if(lSpeed - last_speedL > RAMP_RATE) {
+            lSpeed = last_speedL + RAMP_RATE;
+        } else if(lSpeed - last_speedL < -RAMP_RATE) {
+            lSpeed = last_speedL - RAMP_RATE;
+        }
+        if(rSpeed - last_speedR > RAMP_RATE) {
+            rSpeed = last_speedR + RAMP_RATE;
+        } else if(rSpeed - last_speedR < -RAMP_RATE) {
+            rSpeed = last_speedR - RAMP_RATE;
+        }
+        last_speedL = lSpeed;
+        last_speedR = rSpeed;
         
-        if(leftJag != null) {
+        if(leftJag != null && leftJag2 != null) {
             try {
-                leftJag.setX(speedLeft * maxRPM);
-                leftJag2.setX(speedLeft * maxRPM);
-                System.out.println("Commanded motor speed left: " + speedLeft * maxRPM);
-                System.out.println("Actual motor speed left: " + leftJag.getSpeed());
+                leftJag.setX(lSpeed);
+                leftJag2.setX(lSpeed);
+                System.out.println("Commanded motor speed left: " + lSpeed);
+                System.out.println("Actual motor speed left 1: " + leftJag.getSpeed());
+                System.out.println("Actual motor speed left 2: " + leftJag2.getSpeed());
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -182,10 +212,11 @@ public class Drive extends Subsystem {
         }
         if(rightJag != null && rightJag2 != null) {
             try {
-                rightJag.setX(-speedRight * maxRPM);
-                rightJag2.setX(-speedRight * maxRPM);
-                System.out.println("Commanded motor speed right: " + -speedRight * maxRPM);
-                System.out.println("Actual motor speed right: " + rightJag.getSpeed());
+                rightJag.setX(rSpeed);
+                rightJag2.setX(rSpeed);
+                System.out.println("Commanded motor speed right: " + rSpeed);
+                System.out.println("Actual motor speed right 1: " + rightJag.getSpeed());
+                System.out.println("Actual motor speed right 2: " + rightJag2.getSpeed());
              } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -199,6 +230,9 @@ public class Drive extends Subsystem {
             try {
                 leftJag.setX(left);
                 leftJag2.setX(left);
+                System.out.println("Commanded motor speed left: " + left);
+                System.out.println("Actual motor speed left 1: " + leftJag.getSpeed());
+                System.out.println("Actual motor speed left 2: " + leftJag2.getSpeed());
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -208,6 +242,9 @@ public class Drive extends Subsystem {
             try {
                 rightJag.setX(-right);
                 rightJag2.setX(-right);
+                System.out.println("Commanded motor speed right: " + -right);
+                System.out.println("Actual motor speed right 1: " + rightJag.getSpeed());
+                System.out.println("Actual motor speed right 2: " + rightJag2.getSpeed());
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -215,6 +252,90 @@ public class Drive extends Subsystem {
         }
     }
     
+    /**
+     * Converts from gearbox shaft rotation to wheel distance traveled
+     * 
+     * @param revolutions output shaft rotations
+     * @return distance wheel travels in inches
+     */
+    private double encoderToDistance(double revolutions) {
+        /* convert from revolutions at geabox output shaft to distance in inches
+         * ouput sproket has 18 teeth, and wheel sproket has 22 teeth
+         * wheel diameter is nominal 6 inches.
+         */
+        return DISTANCE_PER_REVOLUTION * revolutions;
+    }
+    
+    /**
+     * The distance traveled by the left wheel since Jag powered on
+     * 
+     * @return Total distance traveled by right wheel in inches 
+     */
+    private double getLDist() {
+
+        double position = 0.0;
+        if (leftJag != null) {
+            try {
+                position = leftJag.getPosition();
+            } catch(CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("****************CAN timeout***********");
+                SmartDashboard.putString("Drive Fault", ex.toString());
+            }
+        }
+        return position;
+    }
+    
+    /**
+     * The distance traveled by the right wheel since Jag powered on
+     * 
+     * @return Total distance traveled by right wheel in inches 
+     */
+    public double getLeftDistance() {
+
+        return encoderToDistance(getLDist()-m_leftResetPosn);
+    }
+    
+    /**
+     * The distance traveled by the right wheel since Jag powered on
+     * 
+     * @return Total distance traveled by right wheel in inches 
+     */
+    private double getRDist() {
+
+        double position = 0.0;
+        if (rightJag != null){
+            try {
+                position = -rightJag.getPosition();
+            } catch(CANTimeoutException ex) {
+                m_fault = true;
+                System.err.println("****************CAN timeout***********");
+                SmartDashboard.putString("Drive Fault", ex.toString());
+            }
+        }
+        return position;
+    }
+    
+    /**
+     * The distance traveled by the right wheel since Jag powered on
+     * 
+     * @return Total distance traveled by right wheel in inches 
+     */
+    public double getRightDistance() {
+
+        return encoderToDistance(getRDist()-m_rightResetPosn);
+    }
+    
+    public double getAverageDistance() {
+        System.out.println("right distane = " + getRightDistance());
+        System.out.println("left distane = " + getLeftDistance());
+        return (getLeftDistance() + getRightDistance()) / 2.0;
+    }
+
+    public void resetDistance() {
+        m_leftResetPosn = getLDist();
+        m_rightResetPosn = getRDist();
+    }
     /**
      * Returns the value of the fault flag
      */
@@ -225,25 +346,27 @@ public class Drive extends Subsystem {
 
     public void Shift() {
         //'gearing' is set to whatever state the shifting solenoids are currently in
-        boolean gearing = false;
-        gearing = m_LShifter.get();
+        boolean gearing = m_LShifter.get();
 
         //Diagnostic
         System.out.println("Attempting to shift: Subsystem Method.");
-
         System.out.println("Attempting to shift: Gearing =" + gearing);
 
         //Switch on 'gearing', sent to "shifter".set()
-        if (gearing == true) {
+        if (gearing) {
+            //high unsure
             m_LShifter.set(false);
             m_RShifter.set(true);
-        }
-        if (gearing == false) {
+        } else {
+            //low unsure
             m_RShifter.set(false);
             m_LShifter.set(true);
-            System.err.println("LShifter" + m_LShifter.get());
-            System.err.println("RShifter" + m_RShifter.get());
+            //System.err.println("LShifter" + m_LShifter.get());
+            //System.err.println("RShifter" + m_RShifter.get());
         }
+        System.out.println("LShifter" + m_LShifter.get());
+        System.out.println("RShifter" + m_RShifter.get());
+        
     }
     public boolean getGearing() {
         return m_RShifter.get();
@@ -252,6 +375,7 @@ public class Drive extends Subsystem {
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
+        //setDefaultCommand(new DrivewithController());
         setDefaultCommand(new DriveWithControllerClosed());
     }
 }

@@ -7,6 +7,7 @@ package edu.wpi.first.wpilibj.templates.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 //import edu.wpi.first.wpilibj.templates.commands.CalculateHotGoal;
+import edu.wpi.first.wpilibj.templates.commands.DriveAutonomous;
 
 /**
  *
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class Autonomous extends CommandGroup {
     
     public Autonomous() {
+        addParallel(new DriveAutonomous(100,100,100,48));
 //        addParallel(new CalculateHotGoal());
         // Add Commands here:
         // e.g. addSequential(new Command1());

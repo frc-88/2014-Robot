@@ -8,7 +8,7 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author David and minions
  */
-public class DriveClosed extends CommandBase {
+public class DriveAutonomous extends CommandBase {
     
     private double m_speedLeft;
     private double m_speedRight;
@@ -16,7 +16,7 @@ public class DriveClosed extends CommandBase {
     private double m_distance;
     private boolean m_backwards = false;
     
-    public DriveClosed(double leftSpeed, double rightSpeed, double time, double distance) {
+    public DriveAutonomous(double leftSpeed, double rightSpeed, double time, double distance) {
         
         super("DriveClosed(" + leftSpeed + ", " + rightSpeed + ", " + time + ", " + distance +")");
 
@@ -45,14 +45,15 @@ public class DriveClosed extends CommandBase {
         if(!drive.isClosedLoop()) {
             drive.enableClosedLoop();
         }
-//        currentDistance = drive.getAverageDistance();
-//        if(m_backwards) {
-//            m_distance = currentDistance - m_distance;
-//        } else {
-//            m_distance = currentDistance + m_distance;
-//        }
-//        setTimeout(m_timeout);
-//        drive.driveTankClosedLoop(m_speedLeft, m_speedRight);
+        drive.resetDistance();
+        currentDistance = drive.getAverageDistance();
+        if(m_backwards) {
+            m_distance = currentDistance - m_distance;
+        } else {
+            m_distance = currentDistance + m_distance;
+        }
+        setTimeout(m_timeout);
+        drive.driveTankClosedLoop(m_speedLeft, m_speedRight);
 
     }
 
@@ -64,14 +65,17 @@ public class DriveClosed extends CommandBase {
     protected boolean isFinished() {
         boolean done = isTimedOut();
 
-//        if(!done) {
-//            double currentDistance = drive.getAverageDistance();
-//            if(m_backwards) {
-//                done = currentDistance <= m_distance;
-//            } else {
-//                done = currentDistance >= m_distance;
-//            }
-//        }
+        if(!done) {
+            double currentDistance = drive.getAverageDistance();
+            System.out.print("current distance =" +currentDistance);
+            if(m_backwards) {
+                done = currentDistance <= m_distance;
+                System.out.println(" <= m_distance = " + m_distance);
+            } else {
+                done = currentDistance >= m_distance;
+                System.out.println(" >= m_distance = " + m_distance);
+            }
+        }
         return done;
     }
 
