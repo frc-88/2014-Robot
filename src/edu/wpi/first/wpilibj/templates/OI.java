@@ -5,6 +5,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.templates.commands.ArmDown;
+import edu.wpi.first.wpilibj.templates.commands.ArmUp;
+import edu.wpi.first.wpilibj.templates.commands.RollersBackward;
+import edu.wpi.first.wpilibj.templates.commands.RollersForward;
 import edu.wpi.first.wpilibj.templates.commands.ShiftGearBox;
 //import edu.wpi.first.wpilibj.templates.commands.GetUpdatedDistance;
 //import edu.wpi.first.wpilibj.templates.commands.GetUpdatedHotGoal;
@@ -36,6 +40,12 @@ public class OI {
     public OI () {
         System.out.println("OI init");
         driverButtonLeftBumper.whenPressed(new ShiftGearBox());
+        operatorButtonLeftBumper.whenPressed(new RollersBackward());
+        operatorButtonLeftBumper.whenReleased(new RollersBackward());
+        operatorButtonRightBumper.whenPressed(new RollersForward());
+        operatorButtonRightBumper.whenReleased(new RollersForward());
+        operatorButtonY.whenPressed(new ArmUp());
+        operatorButtonA.whenPressed(new ArmDown());
         //runs command CalculateDistance when Y is pressed
 //        driverButtonY.whenPressed(new GetUpdatedDistance());
         //operatorButtonY.whenPressed(new GetUpdatedDistance());
@@ -65,7 +75,7 @@ public class OI {
     }
     
     public double getDriveLeftVerticalAxis() {
-        System.out.println("in = " + -driverController.getRawAxis(2));
+        //System.out.println("in = " + -driverController.getRawAxis(2));
         return deadZoneMap(-driverController.getRawAxis(2));
     }     
     public double getDriveLeftHorizontalAxis() {

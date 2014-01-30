@@ -30,6 +30,10 @@ public class Drive extends Subsystem {
     private static final int DRIVE_ENCODER_LINES = 250;
     private boolean m_closedLoop;
     
+    byte groupLeft = 1;
+    byte groupRight = 2;
+    
+    
     Solenoid m_LShifter;
     Solenoid m_RShifter;
     
@@ -183,7 +187,7 @@ public class Drive extends Subsystem {
         }
         double lSpeed = speedLeft * maxRPM;
         double rSpeed = -speedRight * maxRPM;
-        double RAMP_RATE = 40;
+        double RAMP_RATE = 30;
 
         if(lSpeed - last_speedL > RAMP_RATE) {
             lSpeed = last_speedL + RAMP_RATE;
@@ -200,11 +204,12 @@ public class Drive extends Subsystem {
         
         if(leftJag != null && leftJag2 != null) {
             try {
-                leftJag.setX(lSpeed);
-                leftJag2.setX(lSpeed);
-                System.out.println("Commanded motor speed left: " + lSpeed);
-                System.out.println("Actual motor speed left 1: " + leftJag.getSpeed());
-                System.out.println("Actual motor speed left 2: " + leftJag2.getSpeed());
+                leftJag.setX(lSpeed, groupLeft);
+                leftJag2.setX(lSpeed, groupLeft);
+                leftJag.updateSyncGroup(groupLeft);
+//                System.out.println("Commanded motor speed left: " + lSpeed);
+//                System.out.println("Actual motor speed left 1: " + leftJag.getSpeed());
+//                System.out.println("Actual motor speed left 2: " + leftJag2.getSpeed());
             } catch(CANTimeoutException ex) {
                 m_fault = true;
                 System.err.println("****************CAN timeout***********");
@@ -212,9 +217,11 @@ public class Drive extends Subsystem {
         }
         if(rightJag != null && rightJag2 != null) {
             try {
-                rightJag.setX(rSpeed);
-                rightJag2.setX(rSpeed);
+                rightJag.setX(rSpeed, groupRight);
+                rightJag2.setX(rSpeed, groupRight);
+                rightJag.updateSyncGroup(groupRight);
                 System.out.println("Commanded motor speed right: " + rSpeed);
+                System.out.println("Actual motor output right 1: " + rightJag.getOutputVoltage());
                 System.out.println("Actual motor speed right 1: " + rightJag.getSpeed());
                 System.out.println("Actual motor speed right 2: " + rightJag2.getSpeed());
              } catch(CANTimeoutException ex) {
