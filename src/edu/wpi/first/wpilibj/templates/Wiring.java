@@ -4,6 +4,8 @@
  */
 package edu.wpi.first.wpilibj.templates;
 
+import edu.wpi.first.wpilibj.PIDSource;
+
 /**
  *
  * @author David
@@ -31,5 +33,5 @@ public class Wiring {
      */
     //wrong value
 //    public static final int lightSensor = 4;
-    
+
 }

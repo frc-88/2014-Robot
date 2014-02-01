@@ -4,6 +4,7 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.subsystems.Drive;
 /**
  *
@@ -34,7 +35,7 @@ public class DrivewithController extends CommandBase {
     // Called just before this Command runs the first time
     protected void initialize() {
         drive.disableClosedLoop();
-        controllerMode = ARCADE_SPLIT;
+        controllerMode = SmartDashboard.getInt("controller mode", TANK_AVG);
         
     }
 
@@ -63,10 +64,14 @@ public class DrivewithController extends CommandBase {
             right = oi.getDriveRightVerticalAxis();
     
             if ( Math.abs(left - right) < AVG_RANGE) {
-                average = left + right / 2.0;    
+                average = left + right / 2.0;
+                drive.driveTankOpenLoop(average, average);
+            }
+            else {
+                  drive.driveTankOpenLoop(left, right);
             }
     
-            drive.driveTankOpenLoop(average, average);
+
 
        } else if (controllerMode == ARCADE_SINGLE) {
            speed = oi.getDriveLeftVerticalAxis();
