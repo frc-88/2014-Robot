@@ -20,7 +20,6 @@ public class DrivewithController extends CommandBase {
     private static int ARCADE_SINGLE = 3;
     private static int ARCADE_SPLIT = 4;
     
-    double average = 0;
     private static double AVG_RANGE = 0.1;
     
     private int controllerMode;
@@ -49,6 +48,7 @@ public class DrivewithController extends CommandBase {
         double right;
         double speed;
         double direction;
+        double average;
         
         if (controllerMode==TANK) {
             // drive the robot based on driver sticks
@@ -93,19 +93,10 @@ public class DrivewithController extends CommandBase {
         double right;
         
        // set left and right to speed adjusted for direction
-       left = speed;
-       right = left - 2 * direction;
+       left = (2.0 * speed + direction) / 3.0;
+       right = (2.0 * speed - direction) / 3.0;
        
-       // normalize left and right so they are between 1 and -1
-       if (right > 1) {
-           left = left - right + 1;
-           right = 1;
-       } else if (right < -1) {
-           left = left + right + 1;
-           right = -1;
-       }
-
-        drive.driveTankOpenLoop(left, right);
+       drive.driveTankOpenLoop(left, right);
 
     }
     
