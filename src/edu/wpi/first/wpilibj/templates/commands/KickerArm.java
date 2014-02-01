@@ -9,32 +9,45 @@
 // *
 // * @author David
 // */
-//public class ArmDown extends CommandBase {
+//public class KickerArm extends CommandBase {
 //    
-//    public ArmDown() {
-//        super("Arm down");
-//        requires(arm);
-//        
+//    boolean done;
+//    double power = 1;
+//    public KickerArm() {
+//        super("arming the kicker");
+//        requires(kicker);
 //        // Use requires() here to declare subsystem dependencies
 //        // eg. requires(chassis);
 //    }
 //
 //    // Called just before this Command runs the first time
 //    protected void initialize() {
-//        arm.ArmDown();
+//        kicker.KickerOpenLoop(power);
+//        
 //    }
 //
 //    // Called repeatedly when this Command is scheduled to run
 //    protected void execute() {
+//        /* something is light value and then the method cant be set
+//         * up yet because we don't know what to declare the sensor as
+//         * or even what sensor we are using
+//        */
+////        if (kicker.ReturnLightSensorValue) {
+//            done = true;
+////        }
+////        else {
+////            done = false;
+////        }
 //    }
 //
 //    // Make this return true when this Command no longer needs to run execute()
 //    protected boolean isFinished() {
-//        return false;
+//        return done;
 //    }
 //
 //    // Called once after isFinished returns true
 //    protected void end() {
+//        kicker.KickerOpenLoop(0);
 //    }
 //
 //    // Called when another command which requires one or more of the same

@@ -54,20 +54,21 @@ public class Drive extends Subsystem {
 
                 leftJag = new CANJaguar(Wiring.leftCANDrive);
                 leftJag2 = new CANJaguar(Wiring.leftCANDrive2);
+                System.out.println("setting up left side jags");
                 //leftJag.disableControl();
-                if (leftJag != null) {
-                    leftJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
-                    leftJag.configEncoderCodesPerRev(DRIVE_ENCODER_LINES);
-                    leftJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                    leftJag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
-                    leftJag.configNeutralMode(CANJaguar.NeutralMode.kCoast);
-                    leftJag2.changeControlMode(CANJaguar.ControlMode.kSpeed);
-                    leftJag2.configEncoderCodesPerRev(DRIVE_ENCODER_LINES);
-                    leftJag2.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                    leftJag2.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
-                    leftJag2.configNeutralMode(CANJaguar.NeutralMode.kCoast);
-                    
-                }
+//                if (leftJag != null) {
+//                    leftJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
+//                    leftJag.configEncoderCodesPerRev(DRIVE_ENCODER_LINES);
+//                    leftJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+//                    leftJag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
+//                    leftJag.configNeutralMode(CANJaguar.NeutralMode.kCoast);
+//                    leftJag2.changeControlMode(CANJaguar.ControlMode.kSpeed);
+//                    leftJag2.configEncoderCodesPerRev(DRIVE_ENCODER_LINES);
+//                    leftJag2.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+//                    leftJag2.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
+//                    leftJag2.configNeutralMode(CANJaguar.NeutralMode.kCoast);
+//                    
+//                }
                 
             }
             catch (CANTimeoutException ex) {
@@ -78,19 +79,20 @@ public class Drive extends Subsystem {
         try {
                 rightJag = new CANJaguar(Wiring.rightCANDrive);
                 rightJag2 = new CANJaguar(Wiring.rightCANDrive2);
+                System.out.println("setting up right side jags");
                 //rightJag2.disableControl();
-                if (rightJag2 != null && rightJag != null) {
-                    rightJag2.configEncoderCodesPerRev(DRIVE_ENCODER_LINES);
-                    rightJag2.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                    rightJag2.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
-                    rightJag2.configNeutralMode(CANJaguar.NeutralMode.kCoast);
-                    rightJag2.changeControlMode(CANJaguar.ControlMode.kSpeed);
-                    rightJag.configEncoderCodesPerRev(DRIVE_ENCODER_LINES);
-                    rightJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-                    rightJag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
-                    rightJag.configNeutralMode(CANJaguar.NeutralMode.kCoast);
-                    rightJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
-                }
+//                if (rightJag2 != null && rightJag != null) {
+//                    rightJag2.configEncoderCodesPerRev(DRIVE_ENCODER_LINES);
+//                    rightJag2.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+//                    rightJag2.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
+//                    rightJag2.configNeutralMode(CANJaguar.NeutralMode.kCoast);
+//                    rightJag2.changeControlMode(CANJaguar.ControlMode.kSpeed);
+//                    rightJag.configEncoderCodesPerRev(DRIVE_ENCODER_LINES);
+//                    rightJag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+//                    rightJag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
+//                    rightJag.configNeutralMode(CANJaguar.NeutralMode.kCoast);
+//                    rightJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
+//                }
         }
             catch  (CANTimeoutException ex) {
                 System.out.println("***CAN ERROR***");
@@ -101,42 +103,42 @@ public class Drive extends Subsystem {
     /**
      * Enables ClosedLoop control Driving. It sets it to speed.
      */
-    public void enableClosedLoop() {
-        double position;
-        System.out.println("Enabling closed loop control");
-        
-        if(rightJag2 != null && leftJag != null && rightJag != null) {
-            try {
-                // set the right motor to closed loop
-                rightJag2.changeControlMode(CANJaguar.ControlMode.kSpeed);
-                rightJag2.setPID(-.5, -0.01, 0.0);
-                position = rightJag2.getPosition();
-                rightJag2.enableControl(position);
-
-                rightJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
-                rightJag.setPID(-.5, -0.01, 0.0);
-                position = rightJag.getPosition();
-                rightJag.enableControl(position);
-
-                // set the left motor to closed loop
-                leftJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
-                leftJag.setPID(-.5, -0.01, 0.0);
-                position = leftJag.getPosition();
-                leftJag.enableControl(position);
-                
-                leftJag2.changeControlMode(CANJaguar.ControlMode.kSpeed);
-                leftJag2.setPID(-.5, -0.01, 0.0);
-                position = leftJag2.getPosition();
-                leftJag2.enableControl(position);
-
-                // set the enable flag
-                m_closedLoop = true;
-            } catch (CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("CAN timeout");
-            }
-        }
-    }
+//    public void enableClosedLoop() {
+//        double position;
+//        System.out.println("Enabling closed loop control");
+//        
+//        if(rightJag2 != null && leftJag != null && rightJag != null) {
+//            try {
+//                // set the right motor to closed loop
+//                rightJag2.changeControlMode(CANJaguar.ControlMode.kSpeed);
+//                rightJag2.setPID(-.5, -0.01, 0.0);
+//                position = rightJag2.getPosition();
+//                rightJag2.enableControl(position);
+//
+//                rightJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
+//                rightJag.setPID(-.5, -0.01, 0.0);
+//                position = rightJag.getPosition();
+//                rightJag.enableControl(position);
+//
+//                // set the left motor to closed loop
+//                leftJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
+//                leftJag.setPID(-.5, -0.01, 0.0);
+//                position = leftJag.getPosition();
+//                leftJag.enableControl(position);
+//                
+//                leftJag2.changeControlMode(CANJaguar.ControlMode.kSpeed);
+//                leftJag2.setPID(-.5, -0.01, 0.0);
+//                position = leftJag2.getPosition();
+//                leftJag2.enableControl(position);
+//
+//                // set the enable flag
+//                m_closedLoop = true;
+//            } catch (CANTimeoutException ex) {
+//                m_fault = true;
+//                System.err.println("CAN timeout");
+//            }
+//        }
+//    }
     
      /**
      * Disables the Drive closed loop and puts it into open loop.
@@ -235,6 +237,7 @@ public class Drive extends Subsystem {
 
         if(leftJag != null || leftJag2 !=null) {
             try {
+                System.out.println("trying to run open loop");
                 leftJag.setX(left);
                 leftJag2.setX(left);
                 System.out.println("Commanded motor speed left: " + left);
@@ -382,7 +385,7 @@ public class Drive extends Subsystem {
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new DrivewithController());
-        setDefaultCommand(new DriveWithControllerClosed());
+        setDefaultCommand(new DrivewithController());
+        //setDefaultCommand(new DriveWithControllerClosed());
     }
 }

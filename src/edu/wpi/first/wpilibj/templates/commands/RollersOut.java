@@ -9,19 +9,18 @@
 // *
 // * @author David
 // */
-//public class ArmDown extends CommandBase {
+//public class RollersOut extends CommandBase {
 //    
-//    public ArmDown() {
-//        super("Arm down");
-//        requires(arm);
-//        
+//    public RollersOut() {
+//        super("rollers backwards");
+//        requires(roller);
 //        // Use requires() here to declare subsystem dependencies
 //        // eg. requires(chassis);
 //    }
 //
 //    // Called just before this Command runs the first time
 //    protected void initialize() {
-//        arm.ArmDown();
+//        roller.RollerPower(roller.ROLLER_OUT_POWER);
 //    }
 //
 //    // Called repeatedly when this Command is scheduled to run

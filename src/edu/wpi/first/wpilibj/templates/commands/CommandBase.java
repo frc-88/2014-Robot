@@ -3,12 +3,12 @@ package edu.wpi.first.wpilibj.templates.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.OI;
-import edu.wpi.first.wpilibj.templates.subsystems.ArmFeeder;
+//import edu.wpi.first.wpilibj.templates.subsystems.ArmFeeder;
 import edu.wpi.first.wpilibj.templates.subsystems.ExampleSubsystem;
 //import edu.wpi.first.wpilibj.templates.subsystems.Camera;
 import edu.wpi.first.wpilibj.templates.subsystems.Drive;
-import edu.wpi.first.wpilibj.templates.subsystems.Kicker;
-import edu.wpi.first.wpilibj.templates.subsystems.Rollers;
+//import edu.wpi.first.wpilibj.templates.subsystems.Kicker;
+//import edu.wpi.first.wpilibj.templates.subsystems.Rollers;
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.
@@ -22,9 +22,9 @@ public abstract class CommandBase extends Command {
     // Create a single static instance of all of your subsystems
 //    public static Camera camera = new Camera();
     public static Drive drive = new Drive();
-    public static Rollers roller = new Rollers();
-    public static ArmFeeder arm = new ArmFeeder();
-    public static Kicker kicker = new Kicker();
+//    public static Rollers roller = new Rollers();
+//    public static ArmFeeder arm = new ArmFeeder();
+//    public static Kicker kicker = new Kicker();
     
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely
@@ -36,8 +36,8 @@ public abstract class CommandBase extends Command {
         oi = new OI();
         System.out.println("command base init finished");
         SmartDashboard.putData(drive);
-        SmartDashboard.putData(roller);
-        SmartDashboard.putData(arm);
+//        SmartDashboard.putData(roller);
+//        SmartDashboard.putData(arm);
         //SmartDashboard.putData(camera);
         // Show what command your subsystem is running on the SmartDashboard
         //SmartDashboard.putData(exampleSubsystem);
