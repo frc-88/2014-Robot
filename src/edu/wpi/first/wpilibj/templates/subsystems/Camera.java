@@ -6,6 +6,7 @@
 //import edu.wpi.first.wpilibj.command.Subsystem;
 //import edu.wpi.first.wpilibj.image.*;
 //import edu.wpi.first.wpilibj.image.NIVision.MeasurementType;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.templates.commands.CalculateHotGoal;
 //
 ///**
@@ -233,7 +234,7 @@
 //                        } else {
 //                            System.out.println("No hot target present");
 //                        }
-//
+//                  SmartDashboard.putBoolean("Goal is hot ", hot);
 //                    
 //                }
 //
@@ -522,9 +523,6 @@
 //        int particleCount;
 //        double distance = -1;
 //        double highestScore = 0;
-//
-//        System.out.println("find distance");
-//
 //        try {
 //            /**
 //             * Do the image capture with the camera and apply the algorithm
@@ -588,6 +586,7 @@
 //        } catch (NIVisionException ex) {
 //            ex.printStackTrace();
 //        }
+//        SmartDashboard.putDouble("distance from target", distance);
 //        return distance;
 //    }
 //}

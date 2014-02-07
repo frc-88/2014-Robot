@@ -7,6 +7,7 @@
 //
 //import edu.wpi.first.wpilibj.command.Subsystem;
 //import edu.wpi.first.wpilibj.Solenoid;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.templates.Wiring;
 //
 ///**
@@ -30,8 +31,9 @@
 //        //these may need to be flipped
 //        lArmSolenoid.set(false);
 //        rArmSolenoid.set(true);
-//        System.out.println("Larm" + lArmSolenoid.get());
-//        System.out.println("Rarm" +rArmSolenoid.get());
+//        SmartDashboard.putBoolean("l arm solenoid", lArmSolenoid.get());
+//        SmartDashboard.putBoolean("r arm solenoid", rArmSolenoid.get());
+//        
 //    }
 //    
 //    public void ArmDown() {
@@ -40,8 +42,9 @@
 //        //these may need to be flipped
 //        lArmSolenoid.set(true);
 //        rArmSolenoid.set(false);
-//        System.out.println("Larm" + lArmSolenoid.get());
-//        System.out.println("Rarm" +rArmSolenoid.get());
+//        SmartDashboard.putBoolean("l arm solenoid", lArmSolenoid.get());
+//        SmartDashboard.putBoolean("r arm solenoid", rArmSolenoid.get());
+//        
 //    }
 //    
 //    // Put methods for controlling this subsystem

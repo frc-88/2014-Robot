@@ -11,13 +11,14 @@ import edu.wpi.first.wpilibj.PIDSource;
  * @author David
  */
 public class Wiring {
-    public static final int leftCANDrive = 16;
-    public static final int leftCANDrive2 = 17;
-    public static final int rightCANDrive = 3;
-    public static final int rightCANDrive2 = 6;
+    public static final int leftCANDrive = 16; //final is 3
+    public static final int leftCANDrive2 = 17; //final is 4
+    public static final int rightCANDrive = 3; //final is 2
+    public static final int rightCANDrive2 = 6; //final is 6
+    
     //wrong values
-//    public static final int armJag = 1;
-//    public static final int kickerJag = 2;
+//    public static final int rollerJag = 7;
+//    public static final int kickerJag = 5;
     /*
      * ### Solenoids ###
      */
@@ -27,6 +28,12 @@ public class Wiring {
     //wrong values
 //    public static final int lArm = 9;
 //    public static final int rArm = 10;
+    /*
+     * ### Compressor ###
+     */
+    //wrong values
+    public static final int pressorSwitchChannel = 8;
+    public static final int compressorSwitchChannel = 9;
     
     /*
      *##Sensors

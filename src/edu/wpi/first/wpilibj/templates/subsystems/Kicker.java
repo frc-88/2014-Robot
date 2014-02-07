@@ -9,6 +9,7 @@
 //import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.can.CANTimeoutException;
 //import edu.wpi.first.wpilibj.command.Subsystem;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.templates.Wiring;
 //
 ///**
@@ -26,7 +27,7 @@
 //        try {
 //            kickerJag = new CANJaguar(Wiring.kickerJag);
 //        }catch(CANTimeoutException ex) {
-//            System.out.println("kicker Jag timedout");
+//                SmartDashboard.putBoolean("CAN ERROR choo choo", true);
 //        }
 //    }
 //    // Put methods for controlling this subsystem
@@ -34,6 +35,7 @@
 //    
 ////    public boolean ReturnLightSensorValue() {
 ////        boolean tripped = lightSensor.get();
+////        SmartDashboard.putBoolean("light sensor choo choo ", lightSensor.get()); 
 ////        return tripped;
 ////    }
 //    
@@ -41,7 +43,7 @@
 //        try{
 //            kickerJag.setX(value);
 //        }catch(CANTimeoutException ex){
-//            System.out.println("kicker Jag timedout");
+//            SmartDashboard.putDouble("kicker power", value);
 //        }
 //    }
 //

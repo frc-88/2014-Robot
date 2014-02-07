@@ -8,6 +8,7 @@
 //import edu.wpi.first.wpilibj.CANJaguar;
 //import edu.wpi.first.wpilibj.can.CANTimeoutException;
 //import edu.wpi.first.wpilibj.command.Subsystem;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.templates.Wiring;
 //
 ///**
@@ -23,16 +24,16 @@
 //    
 //    public Rollers() {
 //        try {
-//            rollerJag = new CANJaguar(Wiring.armJag);
+//            rollerJag = new CANJaguar(Wiring.rollerJag);
 //        }catch (CANTimeoutException ex) {
-//            System.out.println("arm jag has timedout");
+//                SmartDashboard.putBoolean("CAN ERROR roller", true);
 //        }
 //    }
 //    public void RollerPower(double power) {
 //        try {
 //            rollerJag.setX(power);
 //        }catch(CANTimeoutException ex) {
-//            System.out.println("roller jag has timed out");
+//                SmartDashboard.putDouble("Roller power ", power);
 //        }
 //    }
 //   

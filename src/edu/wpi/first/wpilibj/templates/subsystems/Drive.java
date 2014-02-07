@@ -16,8 +16,9 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.templates.JagPair;
 import edu.wpi.first.wpilibj.templates.Wiring;
-import edu.wpi.first.wpilibj.templates.commands.DrivewithController;
+import edu.wpi.first.wpilibj.templates.commands.DrivewithControllerOpen;
 import edu.wpi.first.wpilibj.templates.commands.DriveWithControllerClosed;
 import edu.wpi.first.wpilibj.templates.commands.CommandBase;
 
@@ -38,10 +39,10 @@ public class Drive extends Subsystem {
     PIDOutput leftPIDOutput;
     PIDOutput rightPIDOutput;
     
-    private CANJaguar leftJag = null;
-    private CANJaguar rightJag = null;
-    private CANJaguar leftJag2 = null;
-    private CANJaguar rightJag2 = null;
+    private CANJaguar leftJag1;
+    private CANJaguar leftJag2;
+    private CANJaguar rightJag1;
+    private CANJaguar rightJag2;
     private boolean m_fault = false;
     private static final int DRIVE_ENCODER_LINES = 250;
     private boolean m_closedLoop;
@@ -56,12 +57,13 @@ public class Drive extends Subsystem {
     double last_speedR = 0.0;
     private double m_leftResetPosn = 0.0;
     private double m_rightResetPosn = 0.0;
-    private static final double DISTANCE_PER_REVOLUTION = 19.25;
+    //feet per revolution over encoder lines
+    private static final double DISTANCE_PER_REVOLUTION = 1.57/DRIVE_ENCODER_LINES;
 
-    private static final int lEncoderAChannel = 1;
-    private static final int lEncoderBChannel = 2;
-    private static final int rEncoderAChannel = 3;
-    private static final int rEncoderBChannel = 4;
+    private static final int lEncoderAChannel = 4;
+    private static final int lEncoderBChannel = 5;
+    private static final int rEncoderAChannel = 6;
+    private static final int rEncoderBChannel = 7;
     
     public Drive()  {
         m_LShifter = new Solenoid(Wiring.rShifter);
@@ -69,47 +71,51 @@ public class Drive extends Subsystem {
         m_LShifter.set(true);
         m_RShifter.set(false);
         try {
-                leftJag = new CANJaguar(Wiring.leftCANDrive);
+                leftJag1 = new CANJaguar(Wiring.leftCANDrive);
                 leftJag2 = new CANJaguar(Wiring.leftCANDrive2);
-                leftPIDOutput = leftJag;
                 System.out.println("setting up left side jags");
-//                if (leftJag != null) {
-//                    leftJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
-//                    leftJag.configNeutralMode(CANJaguar.NeutralMode.kCoast);
-//                    leftJag2.changeControlMode(CANJaguar.ControlMode.kSpeed);
+//                if (leftJag1 != null) {
+//                    leftJag1.configNeutralMode(CANJaguar.NeutralMode.kCoast);
 //                    leftJag2.configNeutralMode(CANJaguar.NeutralMode.kCoast);
 //                }
                 
             }
             catch (CANTimeoutException ex) {
-                System.out.println("***CAN ERROR***");
                 m_fault = true;
+                SmartDashboard.putBoolean("CAN ERROR drive ", m_fault);
             }
         
         try {
-                rightJag = new CANJaguar(Wiring.rightCANDrive);
+                rightJag1 = new CANJaguar(Wiring.rightCANDrive);
                 rightJag2 = new CANJaguar(Wiring.rightCANDrive2);
-                rightPIDOutput = rightJag;
                 System.out.println("setting up right side jags");
                 //rightJag2.disableControl();
-//                if (rightJag2 != null && rightJag != null) {
+//                if (rightJag2 != null && rightJag1 != null) {
 //                    rightJag2.configNeutralMode(CANJaguar.NeutralMode.kCoast);
-//                    rightJag2.changeControlMode(CANJaguar.ControlMode.kSpeed);
-//                    rightJag.configNeutralMode(CANJaguar.NeutralMode.kCoast);
-//                    rightJag.changeControlMode(CANJaguar.ControlMode.kSpeed);
+//                    rightJag1.configNeutralMode(CANJaguar.NeutralMode.kCoast);
 //                }
-        }
-            catch  (CANTimeoutException ex) {
-                System.out.println("***CAN ERROR***");
+        }catch  (CANTimeoutException ex) {
                 m_fault = true;
-            }
+                SmartDashboard.putBoolean("CAN ERROR drive ", m_fault);
+        }
+        JagPair lPair = new JagPair(leftJag1, leftJag2);
+        JagPair rPair = new JagPair(rightJag1, rightJag2);
         leftPIDSource =  new Encoder(lEncoderAChannel,lEncoderBChannel);
         rightPIDSource = new Encoder(rEncoderAChannel,rEncoderBChannel);
+        leftPIDSource.setDistancePerPulse(DISTANCE_PER_REVOLUTION);
+        rightPIDSource.setDistancePerPulse(DISTANCE_PER_REVOLUTION);
+        rightPIDSource.setSamplesToAverage(6);
+        leftPIDSource.setSamplesToAverage(6);
         leftPIDSource.setPIDSourceParameter(PIDSourceParameter.kRate);
         rightPIDSource.setPIDSourceParameter(PIDSourceParameter.kRate);
-        leftPIDControl = new PIDController(p,i,d,leftPIDSource,leftJag, cycleTime);
-        rightPIDControl = new PIDController(p,i,d,rightPIDSource,rightJag, cycleTime);
-        
+        leftPIDControl = new PIDController(p,i,d,leftPIDSource,lPair, cycleTime);
+        rightPIDControl = new PIDController(p,i,d,rightPIDSource,rPair, cycleTime);
+        leftPIDSource.reset();
+        rightPIDSource.reset();
+        rightPIDSource.start();
+        leftPIDSource.start();
+        leftPIDControl.enable();
+        rightPIDControl.enable();
     }
     
     /**
@@ -119,7 +125,7 @@ public class Drive extends Subsystem {
         double position;
         System.out.println("Enabling closed loop control");
         
-        if(rightJag2 != null && leftJag != null && rightJag != null) {
+        if(rightJag2 != null && leftJag1 != null && rightJag1 != null) {
             try {
                 // set the right motor to closed loop
                 //may be percent v bus
@@ -127,16 +133,16 @@ public class Drive extends Subsystem {
                 rightPIDControl.setPID(p, i, d);
                 EnablePID();
                 rightJag2.changeControlMode(CANJaguar.ControlMode.kVoltage);
-                rightJag.changeControlMode(CANJaguar.ControlMode.kVoltage);
+                rightJag1.changeControlMode(CANJaguar.ControlMode.kVoltage);
 
                 // set the left motor to closed loop
-                leftJag.changeControlMode(CANJaguar.ControlMode.kVoltage);
+                leftJag1.changeControlMode(CANJaguar.ControlMode.kVoltage);
                 leftJag2.changeControlMode(CANJaguar.ControlMode.kVoltage);
                 // set the enable flag
                 m_closedLoop = true;
             } catch (CANTimeoutException ex) {
+                SmartDashboard.putBoolean("CAN ERROR drive ", m_fault);
                 m_fault = true;
-                System.err.println("CAN timeout");
             }
         }
     }
@@ -145,22 +151,22 @@ public class Drive extends Subsystem {
      * Disables the Drive closed loop and puts it into open loop.
      */
     public void disableClosedLoop() {
-        if(rightJag2 != null && leftJag != null) {
+        if(rightJag2 != null && leftJag1 != null) {
             try {
                 // set the right motor to open loop
                 DisablePID();
                 rightJag2.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
-                rightJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+                rightJag1.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
 
                 // set the left motor to open loop
-                leftJag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+                leftJag1.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
                 leftJag2.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
 
                 // set the enable flag to false
                 m_closedLoop = false;
             } catch (CANTimeoutException ex) {
                 m_fault = true;
-                System.err.println("CAN timeout");
+                SmartDashboard.putBoolean("CAN ERROR drive", m_fault);
             }
         }
     }
@@ -172,25 +178,39 @@ public class Drive extends Subsystem {
     public boolean isClosedLoop() {
         return m_closedLoop;
     }
-    
+    /**
+     * Drives the robot in closed loop
+     * @param speedLeft joystick value passed in
+     * @param speedRight joystick value passed in
+     */
     public void driveTankClosedLoop(double speedLeft, double speedRight) {
         
-        
-        double maxRPMHighGear = 400;
-        double maxRPMLowGear = 160;
-        double maxRPM = 0;
+        double maxSpeedHighGear = 10.4; // feet per second
+        double maxSpeedLowGear = 4.2;   // feet per second
+
+        double maxSpeed = 0;
         if (getGearing()) {
-            maxRPM = maxRPMHighGear;
+            maxSpeed = maxSpeedHighGear;
         }
         else {
-            maxRPM = maxRPMLowGear;
+            maxSpeed = maxSpeedLowGear;
         }
-        double lSpeed = speedLeft * maxRPM;
-        double rSpeed = -speedRight * maxRPM;
+        
+        double lSpeed = speedLeft * maxSpeed;
+        double rSpeed = -speedRight * maxSpeed;
+
+        //double lSpeedError = (leftPIDSource.getRate() - lSpeed);
+        //double rSpeedError = (rightPIDSource.getRate() - rSpeed);
+
+   //     if (leftPIDControl.onTarget() && rightPIDControl.onTarget()) {
         leftPIDControl.setSetpoint(lSpeed);
         rightPIDControl.setSetpoint(rSpeed);
-        double lJagTarget = leftPIDControl.get();
-        double rJagTarget = rightPIDControl.get();
+        SmartDashboard.putDouble("encoder value left ", leftPIDSource.getRate());
+        SmartDashboard.putDouble("encoder value right ", rightPIDSource.getRate());
+//        } else {
+            
+  //      }
+
 //        double RAMP_RATE = 30;
 //
 //        if(lSpeed - last_speedL > RAMP_RATE) {
@@ -205,149 +225,81 @@ public class Drive extends Subsystem {
 //        }
 //        last_speedL = lSpeed;
 //        last_speedR = rSpeed;
-        
-        if(leftJag != null && leftJag2 != null) {
-            try {
-                leftJag.setX(lJagTarget, groupLeft);
-                leftJag2.setX(lJagTarget, groupLeft);
-                leftJag.updateSyncGroup(groupLeft);
-//                System.out.println("Commanded motor speed left: " + lSpeed);
-//                System.out.println("Actual motor speed left 1: " + leftJag.getSpeed());
-//                System.out.println("Actual motor speed left 2: " + leftJag2.getSpeed());
-            } catch(CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("****************CAN timeout***********");
-            }
-        }
-        if(rightJag != null && rightJag2 != null) {
-            try {
-                rightJag.setX(rJagTarget, groupRight);
-                rightJag2.setX(rJagTarget, groupRight);
-                rightJag.updateSyncGroup(groupRight);
-                System.out.println("Commanded motor speed right: " + rSpeed);
-                System.out.println("Actual motor output right 1: " + rightJag.getOutputVoltage());
-                System.out.println("Actual motor speed right 1: " + rightJag.getSpeed());
-                System.out.println("Actual motor speed right 2: " + rightJag2.getSpeed());
-             } catch(CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("****************CAN timeout***********");
-            }
-        }
+   
     }
 
     public void driveTankOpenLoop(double left, double right) {
 
-        if(leftJag != null || leftJag2 !=null) {
+        if(leftJag1 != null || leftJag2 !=null) {
             try {
                 System.out.println("trying to run open loop");
-                leftJag.setX(left);
+                leftJag1.setX(left);
                 leftJag2.setX(left);
                 System.out.println("Commanded motor speed left: " + left);
-                System.out.println("Actual motor speed left 1: " + leftJag.getSpeed());
-                System.out.println("Actual motor speed left 2: " + leftJag2.getSpeed());
             } catch(CANTimeoutException ex) {
                 m_fault = true;
-                System.err.println("****************CAN timeout***********");
-            }
+                SmartDashboard.putBoolean("CAN ERROR drive", m_fault);
+                }
         }
-        if(rightJag != null || rightJag2 != null) {
+        if(rightJag1 != null || rightJag2 != null) {
             try {
-                rightJag.setX(-right);
+                rightJag1.setX(-right);
                 rightJag2.setX(-right);
                 System.out.println("Commanded motor speed right: " + -right);
-                System.out.println("Actual motor speed right 1: " + rightJag.getSpeed());
-                System.out.println("Actual motor speed right 2: " + rightJag2.getSpeed());
             } catch(CANTimeoutException ex) {
                 m_fault = true;
-                System.err.println("****************CAN timeout***********");
-            }
+                SmartDashboard.putBoolean("CAN ERROR drive", m_fault);
+                }
         }
     }
-    
     /**
-     * Converts from gearbox shaft rotation to wheel distance traveled
-     * 
-     * @param revolutions output shaft rotations
-     * @return distance wheel travels in inches
+     * @returns speed of left wheel 
      */
-    private double encoderToDistance(double revolutions) {
-        /* convert from revolutions at geabox output shaft to distance in inches
-         * ouput sproket has 18 teeth, and wheel sproket has 22 teeth
-         * wheel diameter is nominal 6 inches.
-         */
-        return DISTANCE_PER_REVOLUTION * revolutions;
+    public double getLeftSpeed() {
+        return leftPIDSource.getRate();
     }
     
     /**
-     * The distance traveled by the left wheel since Jag powered on
-     * 
-     * @return Total distance traveled by right wheel in inches 
+     * @returns speed of right wheel 
      */
-    private double getLDist() {
-
-        double position = 0.0;
-        if (leftJag != null) {
-            try {
-                position = leftJag.getPosition();
-            } catch(CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("****************CAN timeout***********");
-                SmartDashboard.putString("Drive Fault", ex.toString());
-            }
-        }
-        return position;
+    public double getRightSpeed() {
+        return rightPIDSource.getRate();
     }
-    
     /**
-     * The distance traveled by the right wheel since Jag powered on
+     * The distance traveled by the left wheel since reset
      * 
-     * @return Total distance traveled by right wheel in inches 
+     * @return Total distance traveled by left wheel in inches 
      */
     public double getLeftDistance() {
-
-        return encoderToDistance(getLDist()-m_leftResetPosn);
+        return leftPIDSource.getDistance();
     }
     
-    /**
-     * The distance traveled by the right wheel since Jag powered on
-     * 
-     * @return Total distance traveled by right wheel in inches 
-     */
-    private double getRDist() {
-
-        double position = 0.0;
-        if (rightJag != null){
-            try {
-                position = -rightJag.getPosition();
-            } catch(CANTimeoutException ex) {
-                m_fault = true;
-                System.err.println("****************CAN timeout***********");
-                SmartDashboard.putString("Drive Fault", ex.toString());
-            }
-        }
-        return position;
-    }
-    
-    /**
-     * The distance traveled by the right wheel since Jag powered on
-     * 
-     * @return Total distance traveled by right wheel in inches 
-     */
+   /**
+    * The distance traveled by the right wheel since reset
+    * 
+    * @return Total distance traveled by right wheel in inches 
+    */
     public double getRightDistance() {
-
-        return encoderToDistance(getRDist()-m_rightResetPosn);
+        return rightPIDSource.getDistance();
     }
     
+   /**
+    * The average distance traveled by the two wheels since reset
+    * 
+    * @return Total distance traveled by wheels in inches 
+    */
     public double getAverageDistance() {
-        System.out.println("right distane = " + getRightDistance());
-        System.out.println("left distane = " + getLeftDistance());
-        return (getLeftDistance() + getRightDistance()) / 2.0;
+        return (getLeftDistance() + getRightDistance())/2.0;
     }
 
+   /**
+    * Reset the encoders to 0
+    */
     public void resetDistance() {
-        m_leftResetPosn = getLDist();
-        m_rightResetPosn = getRDist();
+        leftPIDSource.reset();
+        rightPIDSource.reset();
     }
+
     /**
      * Returns the value of the fault flag
      */
@@ -397,7 +349,7 @@ public class Drive extends Subsystem {
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new DrivewithController());
+        //setDefaultCommand(new DrivewithControllerOpen());
         setDefaultCommand(new DriveWithControllerClosed());
     }
 }

@@ -51,10 +51,10 @@ public abstract class CommandBase extends Command {
         // put data on dashboard every 10th call
         if(iterator % 10 == 0) {
             // Subsystem faults lights
-//            SmartDashboard.putBoolean("Climber ", !climber.getFault());
-//            SmartDashboard.putBoolean("Tilter ", !tilter.getFault());
-//            SmartDashboard.putBoolean("Dumper ", !dumper.getFault());
-//            SmartDashboard.putBoolean("Drive ", !drive.getFault());
+//            SmartDashboard.putBoolean("Rollers ", !roller.getFault());
+//            SmartDashboard.putBoolean("Arm ", !arm.getFault());
+//            SmartDashboard.putBoolean("Kicker ", !kicker.getFault());
+            SmartDashboard.putBoolean("Drive ", !drive.getFault());
         }
 
        // put data on dashboard every 10th call
@@ -62,10 +62,10 @@ public abstract class CommandBase extends Command {
             // Various indicators
 //            SmartDashboard.putNumber("Climber position ", climber.getPosition());
 //            SmartDashboard.putNumber("Tilter angle ", tilter.getAngle());
-//            SmartDashboard.putNumber("Drive (left) ", drive.getLeftSpeed());
-//            SmartDashboard.putNumber("Drive (right) ", drive.getRightSpeed());
-//            SmartDashboard.putNumber("DriveDist (left) ", drive.getLeftDistance());
-//            SmartDashboard.putNumber("DriveDist (right) ", drive.getRightDistance());
+             SmartDashboard.putNumber("Drive (left) ", drive.getLeftSpeed());
+             SmartDashboard.putNumber("Drive (right) ", drive.getRightSpeed());
+            SmartDashboard.putNumber("DriveDist (left) ", drive.getLeftDistance());
+            SmartDashboard.putNumber("DriveDist (right) ", drive.getRightDistance());
 //            SmartDashboard.putNumber("Range Finder ", base.getRangeFinderDist());
 //            
         }

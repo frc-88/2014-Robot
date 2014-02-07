@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.Drive;
     /**
      * Command for driving the robot
      */
-public class DrivewithController extends CommandBase {
+public class DrivewithControllerOpen extends CommandBase {
     
     private static int TANK = 1;
     private static int TANK_AVG = 2;
@@ -25,7 +25,7 @@ public class DrivewithController extends CommandBase {
     
     private int controllerMode;
     
-    public DrivewithController() {
+    public DrivewithControllerOpen() {
         super("DriveWithController");
         requires(drive);
         // Use requires() here to declare subsystem dependencies
