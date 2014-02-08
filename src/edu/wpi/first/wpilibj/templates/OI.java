@@ -5,13 +5,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-//import edu.wpi.first.wpilibj.templates.commands.ArmDown;
-//import edu.wpi.first.wpilibj.templates.commands.ArmUp;
-//import edu.wpi.first.wpilibj.templates.commands.RollersBackward;
-//import edu.wpi.first.wpilibj.templates.commands.RollersForward;
-import edu.wpi.first.wpilibj.templates.commands.ShiftGearBox;
-//import edu.wpi.first.wpilibj.templates.commands.GetUpdatedDistance;
-//import edu.wpi.first.wpilibj.templates.commands.GetUpdatedHotGoal;
+import edu.wpi.first.wpilibj.templates.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -40,6 +34,10 @@ public class OI {
     public OI () {
         System.out.println("OI init");
         driverButtonLeftBumper.whenPressed(new ShiftGearBox());
+        driverButtonX.whenPressed(new RollersIn());
+        driverButtonX.whenReleased(new RollersStop());
+        driverButtonY.whenPressed(new RollersOut());
+        driverButtonY.whenReleased(new RollersStop());
 //        operatorButtonLeftBumper.whenPressed(new RollersBackward());
 //        operatorButtonLeftBumper.whenReleased(new RollersBackward());
 //        operatorButtonRightBumper.whenPressed(new RollersForward());

@@ -1,44 +1,51 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.wpi.first.wpilibj.templates;
-
-import edu.wpi.first.wpilibj.PIDSource;
 
 /**
  *
  * @author David
  */
 public class Wiring {
-    public static final int leftCANDrive = 16; //final is 3
-    public static final int leftCANDrive2 = 17; //final is 4
-    public static final int rightCANDrive = 3; //final is 2
-    public static final int rightCANDrive2 = 6; //final is 6
-    
-    //wrong values
-//    public static final int rollerJag = 7;
-//    public static final int kickerJag = 5;
     /*
-     * ### Solenoids ###
+     * ### Drive ###
      */
-    //Shifters, in ports 1 and 5.
-    public static final int rShifter=1;
-    public static final int lShifter=5;
+    // motors
+    public static final int leftCANDrive = 3;
+    public static final int leftCANDrive2 = 4;
+    public static final int rightCANDrive = 2;
+    public static final int rightCANDrive2 = 6;
+    // encoders
+    public static final int lEncoderAChannel = 8;
+    public static final int lEncoderBChannel = 9;
+    public static final int rEncoderAChannel = 7;
+    public static final int rEncoderBChannel = 6;
+    // shifters
+    public static final int highShifter=3;
+    public static final int lowShifter=2;
+
+    /*
+     * ### Rollers ###
+     */
+    public static final int rollerJag = 7;
+    
+    /*
+     * ### Kicker ###
+     */
+    // motor
+//    public static final int kickerJag = 5;
+    // encoder???
+    // light sensor
+//    public static final int lightSensor = 4;
+
+    /*
+     * ### Arms ###
+     */
     //wrong values
 //    public static final int lArm = 9;
 //    public static final int rArm = 10;
+    
     /*
      * ### Compressor ###
      */
-    //wrong values
-    public static final int pressorSwitchChannel = 8;
-    public static final int compressorSwitchChannel = 9;
-    
-    /*
-     *##Sensors
-     */
-    //wrong value
-//    public static final int lightSensor = 4;
-
+    public static final int pressorSwitchChannel = 5;
+    public static final int compressorSwitchChannel = 5;
 }
