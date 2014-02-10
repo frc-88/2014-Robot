@@ -36,8 +36,14 @@ public class ShiftGearBox extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if (!done) {
+        //makes sure you are moving in order to shift
+        //is checking for done needed? - David
+        if ((!done) && (Math.abs(drive.getLeftSpeed()) > .3) && (Math.abs(drive.getRightSpeed()) > .3)) {
             drive.Shift();
+            done = true;
+        }
+        //doesnt shift because you are moving too slow or not moving at all
+        else if ((!done) && (Math.abs(drive.getLeftSpeed()) < .3) && (Math.abs(drive.getRightSpeed()) < .3)){
             done = true;
         }
     }
