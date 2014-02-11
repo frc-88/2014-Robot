@@ -1,11 +1,5 @@
-/*
- /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.wpi.first.wpilibj.templates.subsystems;
 
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,15 +11,8 @@ import edu.wpi.first.wpilibj.templates.commands.DriveWithControllerClosed;
  * @author TJ^2 Programming Team
  */
 public class Drive extends Subsystem {
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands 
-
-    PIDOutput leftPIDOutput;
-    PIDOutput rightPIDOutput;
     Solenoid m_LowShifter;
     Solenoid m_HighShifter;
-    double last_speedL = 0.0;
-    double last_speedR = 0.0;
     private JagPair lPair;
     private JagPair rPair;    
     
@@ -34,8 +21,10 @@ public class Drive extends Subsystem {
                 Wiring.lEncoderAChannel, Wiring.lEncoderBChannel);
         rPair = new JagPair(Wiring.rightCANDrive, Wiring.rightCANDrive2,
                 Wiring.rEncoderAChannel, Wiring.rEncoderBChannel);
+
         m_LowShifter = new Solenoid(Wiring.highShifter);
         m_HighShifter = new Solenoid(Wiring.lowShifter);
+
         m_LowShifter.set(true);
         m_HighShifter.set(false);        
     }
@@ -60,7 +49,6 @@ public class Drive extends Subsystem {
         lPair.disableClosedLoop();
         rPair.disableClosedLoop();
         disablePID();
-        
     }
 
     /**
@@ -78,7 +66,6 @@ public class Drive extends Subsystem {
      * @param speedRight joystick value passed in
      */
     public void driveTankClosedLoop(double speedLeft, double speedRight) {
-        
         lPair.setSpeed(speedLeft, getGearing());
         rPair.setSpeed(speedRight, getGearing());
         
@@ -91,6 +78,7 @@ public class Drive extends Subsystem {
     public void driveTankOpenLoop(double left, double right) {
         System.out.println("Commanded motor speed left: " + left);
         System.out.println("Commanded motor speed right: " + -right);
+
         lPair.setX(left);
         rPair.setX(-right);        
     }
@@ -161,15 +149,13 @@ public class Drive extends Subsystem {
 
         //Switch on 'gearing', sent to "shifter".set()
         if (gearing) {
-            //high unsure
+            //high
             m_LowShifter.set(false);
             m_HighShifter.set(true);
         } else {
-            //low unsure
+            //low
             m_HighShifter.set(false);
             m_LowShifter.set(true);
-            //System.err.println("LShifter" + m_LowShifter.get());
-            //System.err.println("RShifter" + m_HighShifter.get());
         }
         System.out.println("LShifter" + m_LowShifter.get());
         System.out.println("RShifter" + m_HighShifter.get());
@@ -191,7 +177,6 @@ public class Drive extends Subsystem {
     }
     
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
         //setDefaultCommand(new DrivewithControllerOpen());
         setDefaultCommand(new DriveWithControllerClosed());
     }
