@@ -31,17 +31,19 @@ public class Wiring {
      * ### Kicker ###
      */
     // motor
-//    public static final int kickerJag = 5;
+    public static final int kickerJag = 5;
     // encoder???
     // light sensor
-//    public static final int lightSensor = 4;
+    public static final int lightSensor = 14;
 
     /*
      * ### Arms ###
      */
     //wrong values
-//    public static final int lArm = 9;
-//    public static final int rArm = 10;
+    public static final int lArm1 = 7;
+    public static final int lArm2 = 8;
+    public static final int rArm1 = 4;
+    public static final int rArm2 = 5;
     
     /*
      * ### Compressor ###

@@ -22,8 +22,8 @@ public abstract class CommandBase extends Command {
 //    public static Compressorr compressor = new Compressorr();
     private static Compressor compressor = new Compressor(Wiring.pressorSwitchChannel, Wiring.compressorSwitchChannel);
     public static Rollers roller = new Rollers();
-//    public static ArmFeeder arm = new ArmFeeder();
-//    public static Kicker kicker = new Kicker();
+    public static ArmFeeder arm = new ArmFeeder();
+    public static Kicker kicker = new Kicker();
     
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely
