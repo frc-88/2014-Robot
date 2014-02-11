@@ -1,11 +1,14 @@
 package edu.wpi.first.wpilibj.templates.subsystems;
 
+import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.JagPair;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.commands.DriveWithControllerClosed;
+import edu.wpi.first.wpilibj.templates.commands.DriveWithControllerSimple;
+import edu.wpi.first.wpilibj.templates.commands.DrivewithControllerOpen;
 
 /**
  * @author TJ^2 Programming Team
@@ -16,12 +19,22 @@ public class Drive extends Subsystem {
     private JagPair lPair;
     private JagPair rPair;    
     
+    Jaguar ljag1;
+    Jaguar ljag2;
+    Jaguar rjag1;
+    Jaguar rjag2;
+    
+    
     public Drive() {
-        lPair = new JagPair(Wiring.leftCANDrive, Wiring.leftCANDrive2,
+        lPair = new JagPair(Wiring.leftDrive, Wiring.leftDrive2,
                 Wiring.lEncoderAChannel, Wiring.lEncoderBChannel);
-        rPair = new JagPair(Wiring.rightCANDrive, Wiring.rightCANDrive2,
+        rPair = new JagPair(Wiring.rightDrive, Wiring.rightDrive2,
                 Wiring.rEncoderAChannel, Wiring.rEncoderBChannel);
-
+//        ljag1 =  new Jaguar(Wiring.leftDrive);
+//        ljag2 =  new Jaguar(Wiring.leftDrive2);
+//        rjag1 =  new Jaguar(Wiring.rightDrive);
+//        rjag2 =  new Jaguar(Wiring.rightDrive2);
+        
         m_LowShifter = new Solenoid(Wiring.highShifter);
         m_HighShifter = new Solenoid(Wiring.lowShifter);
 
@@ -76,11 +89,16 @@ public class Drive extends Subsystem {
     }
     
     public void driveTankOpenLoop(double left, double right) {
-        System.out.println("Commanded motor speed left: " + left);
-        System.out.println("Commanded motor speed right: " + -right);
-
-        lPair.setX(left);
-        rPair.setX(-right);        
+//        System.out.println("Commanded motor speed left: " + left);
+//        System.out.println("Commanded motor speed right: " + -right);
+        
+        //ljag1.set(-left);
+        //ljag2.set(-left);
+        //rjag1.set(right);
+        //rjag2.set(right);
+        
+        lPair.setX(-left);
+        rPair.setX(right);        
     }
 
     /**
@@ -177,7 +195,8 @@ public class Drive extends Subsystem {
     }
     
     public void initDefaultCommand() {
+        setDefaultCommand(new DriveWithControllerSimple());
         //setDefaultCommand(new DrivewithControllerOpen());
-        setDefaultCommand(new DriveWithControllerClosed());
+        //setDefaultCommand(new DriveWithControllerClosed());
     }
 }

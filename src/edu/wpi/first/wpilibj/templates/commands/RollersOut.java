@@ -11,6 +11,8 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class RollersOut extends CommandBase {
     
+    double power;
+    
     public RollersOut() {
         super("RollersOut");
         requires(roller);
@@ -20,7 +22,8 @@ public class RollersOut extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        roller.RollerPower(roller.ROLLER_OUT_POWER);
+        power = oi.getOperatorZAxis();
+        roller.RollerPower(power);
     }
 
     // Called repeatedly when this Command is scheduled to run

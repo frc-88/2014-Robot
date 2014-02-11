@@ -20,7 +20,7 @@ public abstract class CommandBase extends Command {
 //    public static Camera camera = new Camera();
     public static Drive drive = new Drive();
 //    public static Compressorr compressor = new Compressorr();
-    private static Compressor compressor = new Compressor(Wiring.pressorSwitchChannel, Wiring.compressorSwitchChannel);
+    private static Compressor compressor;
     public static Rollers roller = new Rollers();
     public static ArmFeeder arm = new ArmFeeder();
     public static Kicker kicker = new Kicker();
@@ -33,6 +33,7 @@ public abstract class CommandBase extends Command {
         // news. Don't move it.
         System.out.println("command base init");
         oi = new OI();
+        compressor = new Compressor(Wiring.compressorSwitchChannel,Wiring.pressorSwitchChannel);
         compressor.start();
         System.out.println("command base init finished");
         SmartDashboard.putData(drive);

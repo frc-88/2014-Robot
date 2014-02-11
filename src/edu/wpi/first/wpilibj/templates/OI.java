@@ -80,6 +80,9 @@ public class OI {
     public double getDriveLeftHorizontalAxis() {
         return deadZoneMap(driverController.getRawAxis(1));
     }
+    public double getOperatorZAxis() {
+        return operatorController.getZ();
+    }
 
     private static final double deadZone = 0.20;
     private static final double scale = 1.0/(1.0 - deadZone);

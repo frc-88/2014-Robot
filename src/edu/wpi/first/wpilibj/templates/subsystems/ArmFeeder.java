@@ -26,20 +26,20 @@ public class ArmFeeder extends Subsystem {
         rArmSolenoid1 = new Solenoid(Wiring.rArm1);
         lArmSolenoid2 = new Solenoid(Wiring.lArm2);
         rArmSolenoid2 = new Solenoid(Wiring.rArm2);
-        rArmSolenoid1.set(false);
-        rArmSolenoid2.set(true);
-        lArmSolenoid1.set(false);
-        lArmSolenoid2.set(true);
+        rArmSolenoid1.set(true);
+        rArmSolenoid2.set(false);
+        lArmSolenoid1.set(true);
+        lArmSolenoid2.set(false);
     }
     
     public void ArmUp() {
         //Diagnostic
         System.out.println("Attempting to move arm up");
         //these may need to be flipped
-        rArmSolenoid1.set(false);
-        lArmSolenoid1.set(false);
-        rArmSolenoid2.set(true);
-        lArmSolenoid2.set(true);
+        rArmSolenoid1.set(true);
+        lArmSolenoid1.set(true);
+        rArmSolenoid2.set(false);
+        lArmSolenoid2.set(false);
         
         SmartDashboard.putBoolean("l arm solenoid", lArmSolenoid1.get());
         SmartDashboard.putBoolean("r arm solenoid", rArmSolenoid1.get());
@@ -50,10 +50,10 @@ public class ArmFeeder extends Subsystem {
         //Diagnostic
         System.out.println("Attempting to move arm down");
         //these may need to be flipped
-        lArmSolenoid1.set(true);
-        rArmSolenoid1.set(true);
-        rArmSolenoid2.set(false);
-        lArmSolenoid2.set(false);        
+        lArmSolenoid1.set(false);
+        rArmSolenoid1.set(false);
+        rArmSolenoid2.set(true);
+        lArmSolenoid2.set(true);        
         SmartDashboard.putBoolean("l arm solenoid", lArmSolenoid1.get());
         SmartDashboard.putBoolean("r arm solenoid", rArmSolenoid1.get());
         

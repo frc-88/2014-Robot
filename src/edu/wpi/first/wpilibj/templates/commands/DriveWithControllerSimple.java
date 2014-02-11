@@ -1,41 +1,42 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
-import edu.wpi.first.wpilibj.templates.subsystems.ArmFeeder;
-
 /**
  *
- * @author David
+ * @author TJ2
  */
-public class ArmUp extends CommandBase {
+public class DriveWithControllerSimple extends CommandBase {
     
-    boolean done;
+    double left;
+    double right; 
     
-    public ArmUp() {
-        super("arm up");
-        requires(arm);
+    public DriveWithControllerSimple() {
+        
+        
+        super("DriveWithControllerSimple");
+        requires(drive);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        arm.ArmUp();
-        done = true;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        
+         left = oi.getDriveLeftVerticalAxis();
+            right = oi.getDriveRightVerticalAxis();
+    
+            drive.driveTankOpenLoop(left, right);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return done;
+        return false;
     }
 
     // Called once after isFinished returns true
