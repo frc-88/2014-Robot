@@ -71,6 +71,7 @@ public class JagPair implements PIDOutput {
             // set the enable flag to false
             m_closedLoop = false;
         }
+        controller.disable();
     }
 
     /**
@@ -155,14 +156,6 @@ public class JagPair implements PIDOutput {
      */
     public void resetDistance() {
         encoder.reset();
-    }
-
-    public void enablePID() {
-        controller.enable();
-    }
-
-    public void disablePID() {
-        controller.disable();
     }
 
     public void pidWrite(double output) {

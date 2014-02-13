@@ -39,7 +39,6 @@ public class Drive extends Subsystem {
 
         lPair.enableClosedLoop();
         rPair.enableClosedLoop();
-        enablePID();
     }
 
     /**
@@ -50,7 +49,6 @@ public class Drive extends Subsystem {
        
         lPair.disableClosedLoop();
         rPair.disableClosedLoop();
-        disablePID();
     }
 
     /**
@@ -169,16 +167,6 @@ public class Drive extends Subsystem {
 
     public boolean getGearing() {
         return m_HighShifter.get();
-    }
-    
-    public void enablePID() {
-        lPair.enablePID();
-        rPair.enablePID();
-    }
-    
-    public void disablePID() {
-        lPair.disablePID();
-        rPair.disablePID();
     }
     
     public void initDefaultCommand() {
