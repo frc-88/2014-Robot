@@ -1,6 +1,5 @@
 package edu.wpi.first.wpilibj.templates.subsystems;
 
-import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,22 +17,13 @@ public class Drive extends Subsystem {
     Solenoid m_HighShifter;
     private JagPair lPair;
     private JagPair rPair;    
-    Jaguar ljag1;
-    Jaguar ljag2;
-    Jaguar rjag1;
-    Jaguar rjag2;
-    
     
     public Drive() {
         lPair = new JagPair(Wiring.leftDrive, Wiring.leftDrive2,
                 Wiring.lEncoderAChannel, Wiring.lEncoderBChannel);
         rPair = new JagPair(Wiring.rightDrive, Wiring.rightDrive2,
                 Wiring.rEncoderAChannel, Wiring.rEncoderBChannel);
-//        ljag1 =  new Jaguar(Wiring.leftDrive);
-//        ljag2 =  new Jaguar(Wiring.leftDrive2);
-//        rjag1 =  new Jaguar(Wiring.rightDrive);
-//        rjag2 =  new Jaguar(Wiring.rightDrive2);
-        
+
         m_LowShifter = new Solenoid(Wiring.highShifter);
         m_HighShifter = new Solenoid(Wiring.lowShifter);
 
@@ -80,6 +70,9 @@ public class Drive extends Subsystem {
     public void driveTankClosedLoop(double speedLeft, double speedRight) {
         lPair.setSpeed(-speedLeft, getGearing());
         rPair.setSpeed(speedRight, getGearing());
+
+        System.out.println("l side " + lPair.getSpeed());
+        System.out.println("r side " + rPair.getSpeed());
         
         SmartDashboard.putNumber("left speed requested ", speedLeft);
         SmartDashboard.putNumber("right speed requested ", speedRight);
@@ -88,13 +81,8 @@ public class Drive extends Subsystem {
     }
     
     public void driveTankOpenLoop(double left, double right) {
-//        System.out.println("Commanded motor speed left: " + left);
-//        System.out.println("Commanded motor speed right: " + -right);
-        
-        //ljag1.set(-left);
-        //ljag2.set(-left);
-        //rjag1.set(right);
-        //rjag2.set(right);
+        SmartDashboard.putNumber("left speed requested ", -left);
+        SmartDashboard.putNumber("right speed requested ", right);
         
         lPair.setX(-left);
         rPair.setX(right);

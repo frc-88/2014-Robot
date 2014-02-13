@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.wpi.first.wpilibj.templates;
 
-import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -28,7 +21,6 @@ public class JagPair implements PIDOutput {
     private static final int DRIVE_ENCODER_LINES = 250;
     //feet per revolution over encoder lines
     private static final double DISTANCE_PER_PULSE = 1.57 / DRIVE_ENCODER_LINES;
-
     private Jaguar jag1, jag2;
     private Encoder encoder;
     private PIDController controller;
@@ -38,18 +30,8 @@ public class JagPair implements PIDOutput {
     private boolean m_fault;
 
     public JagPair(int jag1In, int jag2In, int encoderA, int encoderB) {
-//       try {
-            jag1 = new Jaguar(jag1In);
-            jag2 = new Jaguar(jag2In);
-
-//                if (jag1 != null) {
-//                    jag1.configNeutralMode(CANJaguar.NeutralMode.kCoast);
-//                    jag2.configNeutralMode(CANJaguar.NeutralMode.kCoast);
-//                }
-//        } catch (TimeoutException ex) {
-//            m_fault = true;
-//            SmartDashboard.putBoolean("CAN ERROR drive ", m_fault);
-//        }
+        jag1 = new Jaguar(jag1In);
+        jag2 = new Jaguar(jag2In);
 
         encoder = new Encoder(encoderA, encoderB);
         encoder.setDistancePerPulse(DISTANCE_PER_PULSE);
@@ -59,7 +41,6 @@ public class JagPair implements PIDOutput {
         encoder.start();
 
         controller = new PIDController(p, i, d, f, encoder, this, cycleTime);
-        controller.enable();
     }
 
     /**
@@ -69,21 +50,17 @@ public class JagPair implements PIDOutput {
         System.out.println("Enabling closed loop control");
 
         if (jag1 != null && jag2 != null) {
-           // try {
-                System.out.println("jag1 is " + jag1);
-                System.out.println("jag2 is " + jag2);
-                
-                // set the motors to closed loop
-                //may be percent v bus
-                controller.setPID(p, i, d, f);
-                
-                // set the enable flag
-                m_closedLoop = true;
-            //} catch (CANTimeoutException ex) {
-            //    SmartDashboard.putBoolean("CAN ERROR drive ", m_fault);
-            //    m_fault = true;
-            //}
+            System.out.println("jag1 is " + jag1);
+            System.out.println("jag2 is " + jag2);
+
+            // set the motors to closed loop
+            //may be percent v bus
+            controller.setPID(p, i, d, f);
+
+            // set the enable flag
+            m_closedLoop = true;
         }
+        controller.enable();
     }
 
     /**
@@ -91,14 +68,8 @@ public class JagPair implements PIDOutput {
      */
     public void disableClosedLoop() {
         if (jag1 != null && jag2 != null) {
-//            try {
-                
-                // set the enable flag to false
-                m_closedLoop = false;
-  //          } catch (CANTimeoutException ex) {
-    //            m_fault = true;
-      //          SmartDashboard.putBoolean("CAN ERROR drive", m_fault);
-        //    }
+            // set the enable flag to false
+            m_closedLoop = false;
         }
     }
 
@@ -119,17 +90,8 @@ public class JagPair implements PIDOutput {
 
     public void setX(double x) {
         if (jag1 != null || jag2 != null) {
-            //try {
-                //System.out.println("raw encoder value " +encoder.getRaw());
-                jag1.set(x);
-                jag2.set(x);
-
-        //System.out.println("Commanded motor speed: " + x);
-            //    CANJaguar.updateSyncGroup(jagGroup);
-            //} catch (CANTimeoutException ex) {
-            //    m_fault = true;
-            //    SmartDashboard.putBoolean("CAN ERROR drive", m_fault);
-            //}
+            jag1.set(x);
+            jag2.set(x);
         }
     }
 
@@ -175,16 +137,6 @@ public class JagPair implements PIDOutput {
 
     public void updateSmartDashboard(String name) {
         SmartDashboard.putNumber(name + " speed actual ", encoder.getRate());
-
-        //try {
-            //SmartDashboard.putNumber(name + " jag1 current", jag1.getOutputCurrent());
-            //SmartDashboard.putNumber(name + " jag2 current", jag2.getOutputCurrent());
-
-        //} catch (CANTimeoutException ex) {
-          //  m_fault = true;
-            //SmartDashboard.putBoolean(name + " CAN ERROR drive", m_fault);
-
-        //}
     }
 
     /**

@@ -11,8 +11,8 @@ public class Wiring {
     // motors
     public static final int leftDrive = 3;
     public static final int leftDrive2 = 4;
-    public static final int rightDrive = 2;
-    public static final int rightDrive2 = 6;
+    public static final int rightDrive = 8;
+    public static final int rightDrive2 = 9;
     // encoders
     public static final int lEncoderAChannel = 8;
     public static final int lEncoderBChannel = 9;

@@ -34,7 +34,7 @@ public class DrivewithControllerOpen extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        //drive.disableClosedLoop();
+        drive.disableClosedLoop();
         controllerMode = SmartDashboard.getInt("controller mode", TANK);
         
     }
