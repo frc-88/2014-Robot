@@ -17,7 +17,7 @@ public abstract class CommandBase extends Command {
     
     public static OI oi;
     // Create a single static instance of all of your subsystems
-//    public static Camera camera = new Camera();
+    public static Camera camera = new Camera();
     public static Drive drive = new Drive();
 //    public static Compressorr compressor = new Compressorr();
     private static Compressor compressor;

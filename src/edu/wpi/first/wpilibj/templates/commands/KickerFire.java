@@ -11,7 +11,7 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class KickerFire extends CommandBase {
     
-    double power = 1;
+    double power = -1;
     boolean shouldKick;
     boolean done;
     
@@ -37,9 +37,10 @@ public class KickerFire extends CommandBase {
             kicker.KickerOpenLoop(power);
         }
         if (!kicker.ReturnLightSensorValue()) {
-          shouldKick = false;
+            shouldKick = false;
             done = true;
         }
+        kicker.ReturnLightSensorValue();
 //
 //       Run until the light sensor changes, then done = true        
     }

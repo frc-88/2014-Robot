@@ -5,8 +5,12 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
+import edu.wpi.first.wpilibj.templates.commands.CommandBase;
+import edu.wpi.first.wpilibj.templates.subsystems.Camera;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-//import edu.wpi.first.wpilibj.templates.commands.CalculateHotGoal;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.command.WaitCommand;
+import edu.wpi.first.wpilibj.templates.commands.CalculateHotGoal;
 import edu.wpi.first.wpilibj.templates.commands.DriveAutonomous;
 
 /**
@@ -16,8 +20,13 @@ import edu.wpi.first.wpilibj.templates.commands.DriveAutonomous;
 public class Autonomous extends CommandGroup {
     
     public Autonomous() {
-        addParallel(new DriveAutonomous(100,100,100,48));
-//        addParallel(new CalculateHotGoal());
+        addParallel(new ArmDown());
+        addParallel(new DriveAutonomous(1,1,2,4));//last is inches or feet?
+        addParallel(new KickerArm());
+        addParallel(new CalculateHotGoal(6));
+        addSequential(new ArmUp());
+        addParallel(new WaitCommand(.25));
+        addSequential(new KickerFire());
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

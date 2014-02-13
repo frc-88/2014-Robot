@@ -12,7 +12,7 @@ package edu.wpi.first.wpilibj.templates.commands;
 public class KickerArm extends CommandBase {
     
     boolean done;
-    double power = 1;
+    double power = -1;
     public KickerArm() {
         super("arming the kicker");
         requires(kicker);

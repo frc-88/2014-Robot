@@ -1,38 +1,37 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
 /**
  *
- * @author David
+ * @author TJ2
  */
-public class RollersOut extends CommandBase {
+public class KickerStop extends CommandBase {
     
-    double power;
+    boolean done;
     
-    public RollersOut() {
-        super("RollersOut");
-        requires(roller);
+    public KickerStop() {
+        super("kicker stop");
+        requires(kicker);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        power = oi.getOperatorZAxis();
-        roller.RollerPower(power);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        kicker.KickerOpenLoop(0);
+        done = true;
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return done;
     }
 
     // Called once after isFinished returns true

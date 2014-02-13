@@ -27,7 +27,7 @@ public class JagPair implements PIDOutput {
     private static byte jagGroup = 1;
     private static final int DRIVE_ENCODER_LINES = 250;
     //feet per revolution over encoder lines
-    private static final double DISTANCE_PER_REVOLUTION = 1.57 / DRIVE_ENCODER_LINES;
+    private static final double DISTANCE_PER_PULSE = 1.57 / DRIVE_ENCODER_LINES;
 
     private Jaguar jag1, jag2;
     private Encoder encoder;
@@ -52,14 +52,14 @@ public class JagPair implements PIDOutput {
 //        }
 
         encoder = new Encoder(encoderA, encoderB);
-        encoder.setDistancePerPulse(DISTANCE_PER_REVOLUTION);
+        encoder.setDistancePerPulse(DISTANCE_PER_PULSE);
         encoder.setSamplesToAverage(6);
         encoder.setPIDSourceParameter(PIDSource.PIDSourceParameter.kRate);
         encoder.reset();
         encoder.start();
 
-//        controller = new PIDController(p, i, d, f, encoder, this, cycleTime);
-     //   controller.enable();
+        controller = new PIDController(p, i, d, f, encoder, this, cycleTime);
+        controller.enable();
     }
 
     /**
@@ -120,7 +120,7 @@ public class JagPair implements PIDOutput {
     public void setX(double x) {
         if (jag1 != null || jag2 != null) {
             //try {
-                
+                //System.out.println("raw encoder value " +encoder.getRaw());
                 jag1.set(x);
                 jag2.set(x);
 

@@ -34,17 +34,14 @@ public class OI {
     public OI () {
         System.out.println("OI init");
         driverButtonLeftBumper.whenPressed(new ShiftGearBox());
-//        driverButtonX.whenPressed(new RollersIn());
-//        driverButtonX.whenReleased(new RollersStop());
-//        driverButtonY.whenPressed(new RollersOut());
-//        driverButtonY.whenReleased(new RollersStop());
-        operatorButtonLeftBumper.whenPressed(new RollersIn());
-        operatorButtonLeftBumper.whenReleased(new RollersStop());
-        operatorButtonRightBumper.whenPressed(new RollersOut());
-        operatorButtonRightBumper.whenReleased(new RollersStop());
+//        operatorButtonLeftBumper.whenPressed(new RollersIn());
+//        operatorButtonLeftBumper.whenReleased(new RollersStop());
+//        operatorButtonRightBumper.whenPressed(new RollersOut());
+//        operatorButtonRightBumper.whenReleased(new RollersStop());
         operatorButtonY.whenPressed(new ArmUp());
         operatorButtonA.whenPressed(new ArmDown());
         operatorButtonX.whenPressed(new KickerFire());
+        operatorButtonX.whenReleased(new KickerStop());
         //runs command CalculateDistance when Y is pressed
 //        driverButtonY.whenPressed(new GetUpdatedDistance());
         //operatorButtonY.whenPressed(new GetUpdatedDistance());

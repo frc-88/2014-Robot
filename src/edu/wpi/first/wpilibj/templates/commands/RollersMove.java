@@ -9,10 +9,12 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author David
  */
-public class RollersStop extends CommandBase {
+public class RollersMove extends CommandBase {
     
-    public RollersStop() {
-        super("RollersStop");
+    double power;
+    
+    public RollersMove() {
+        super("RollersIn");
         requires(roller);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -20,7 +22,9 @@ public class RollersStop extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        roller.RollerPower(roller.ROLLER_STOP_POWER);
+        power = oi.getOperatorZAxis();
+        roller.RollerPower(power);
+        
     }
 
     // Called repeatedly when this Command is scheduled to run

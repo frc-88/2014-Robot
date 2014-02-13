@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.Wiring;
+import edu.wpi.first.wpilibj.templates.commands.RollersMove;
 
 /**
  *
@@ -19,9 +20,6 @@ import edu.wpi.first.wpilibj.templates.Wiring;
 public class Rollers extends Subsystem {
     
     Jaguar rollerJag;
-    public static double ROLLER_IN_POWER = 0.6;
-    public static double ROLLER_OUT_POWER = -1.0;
-    public static double ROLLER_STOP_POWER = 0.0;
     
     public Rollers() {
 //        try {
@@ -39,6 +37,7 @@ public class Rollers extends Subsystem {
     }
    
     public void initDefaultCommand() {
+        setDefaultCommand(new RollersMove());
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }

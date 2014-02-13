@@ -18,7 +18,6 @@ public class Drive extends Subsystem {
     Solenoid m_HighShifter;
     private JagPair lPair;
     private JagPair rPair;    
-    
     Jaguar ljag1;
     Jaguar ljag2;
     Jaguar rjag1;
@@ -79,7 +78,7 @@ public class Drive extends Subsystem {
      * @param speedRight joystick value passed in
      */
     public void driveTankClosedLoop(double speedLeft, double speedRight) {
-        lPair.setSpeed(speedLeft, getGearing());
+        lPair.setSpeed(-speedLeft, getGearing());
         rPair.setSpeed(speedRight, getGearing());
         
         SmartDashboard.putNumber("left speed requested ", speedLeft);
@@ -98,7 +97,7 @@ public class Drive extends Subsystem {
         //rjag2.set(right);
         
         lPair.setX(-left);
-        rPair.setX(right);        
+        rPair.setX(right);
     }
 
     /**
