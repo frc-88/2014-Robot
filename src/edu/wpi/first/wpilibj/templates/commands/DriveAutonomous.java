@@ -42,9 +42,9 @@ public class DriveAutonomous extends CommandBase {
     protected void initialize() {
         double currentDistance;
         
-        if(!drive.isClosedLoop()) {
-            drive.enableClosedLoop();
-        }
+//        if(!drive.isClosedLoop()) {
+//            drive.enableClosedLoop();
+//        }
         drive.resetDistance();
         currentDistance = drive.getAverageDistance();
         if(m_backwards) {
@@ -53,12 +53,13 @@ public class DriveAutonomous extends CommandBase {
             m_distance = currentDistance + m_distance;
         }
         setTimeout(m_timeout);
-        drive.driveTankClosedLoop(m_speedLeft, m_speedRight);
+        drive.driveTankOpenLoop(m_speedLeft, m_speedRight);
 
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        System.out.println("m_timeout is " + m_timeout);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -69,11 +70,15 @@ public class DriveAutonomous extends CommandBase {
             double currentDistance = drive.getAverageDistance();
             System.out.print("current distance =" +currentDistance);
             if(m_backwards) {
-                done = currentDistance <= m_distance;
-                System.out.println(" <= m_distance = " + m_distance);
+                if(currentDistance <= m_distance) {
+                    done = true;
+                }
+                System.out.println(" m_distance = " + m_distance);
             } else {
-                done = currentDistance >= m_distance;
-                System.out.println(" >= m_distance = " + m_distance);
+                if(currentDistance >= m_distance) {
+                    done = true;
+                }
+                System.out.println(" m_distance = " + m_distance);
             }
         }
         return done;
@@ -81,6 +86,8 @@ public class DriveAutonomous extends CommandBase {
 
     // Called once after isFinished returns true
     protected void end() {
+        System.out.println("driving autonomous has ended");
+        drive.driveTankOpenLoop(0, 0);
     }
 
     // Called when another command which requires one or more of the same

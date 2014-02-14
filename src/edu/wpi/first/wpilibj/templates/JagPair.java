@@ -20,7 +20,7 @@ public class JagPair implements PIDOutput {
     private static byte jagGroup = 1;
     private static final int DRIVE_ENCODER_LINES = 250;
     //feet per revolution over encoder lines
-    private static final double DISTANCE_PER_PULSE = 1.57 / DRIVE_ENCODER_LINES;
+    private static final double DISTANCE_PER_PULSE = 1.57 / 250;
     private Jaguar jag1, jag2;
     private Encoder encoder;
     private PIDController controller;

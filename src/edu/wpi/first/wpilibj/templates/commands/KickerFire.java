@@ -24,23 +24,26 @@ public class KickerFire extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if (kicker.ReturnLightSensorValue()) {
-            shouldKick = true;
-        }
-            kicker.KickerOpenLoop(power);
-
+//        if (!kicker.ReturnLightSensorValue()) {
+//            shouldKick = true;
+//        }
+        kicker.KickerOpenLoop(power);
+            
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if (shouldKick) {
-            kicker.KickerOpenLoop(power);
-        }
-        if (!kicker.ReturnLightSensorValue()) {
-            shouldKick = false;
-            done = true;
-        }
-        kicker.ReturnLightSensorValue();
+        kicker.KickerOpenLoop(power);
+//        if (shouldKick) {
+//            kicker.KickerOpenLoop(power);
+//        }
+//        if (kicker.ReturnLightSensorValue()) {
+//            shouldKick = false;
+//            done = true;
+//        }
+        System.out.println(shouldKick);
+        System.out.println("printing light sensor " + kicker.ReturnLightSensorValue());
+        
 //
 //       Run until the light sensor changes, then done = true        
     }

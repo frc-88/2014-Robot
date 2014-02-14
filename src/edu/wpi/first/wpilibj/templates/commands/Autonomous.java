@@ -20,9 +20,10 @@ import edu.wpi.first.wpilibj.templates.commands.DriveAutonomous;
 public class Autonomous extends CommandGroup {
     
     public Autonomous() {
-        addParallel(new ArmDown());
-        addParallel(new DriveAutonomous(1,1,2,4));//last is inches or feet?
-        addParallel(new KickerArm());
+        addSequential(new ArmDown());
+        addParallel(new DriveAutonomous(1,1,10,5));//last is inches or feet?
+ //       addSequential(new DriveAutonomous(0, 0, 0 ,0));
+        //addParallel(new KickerArm());
         addParallel(new CalculateHotGoal(6));
         addSequential(new ArmUp());
         addParallel(new WaitCommand(.25));

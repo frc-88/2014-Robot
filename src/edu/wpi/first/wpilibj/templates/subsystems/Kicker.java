@@ -20,11 +20,12 @@ import edu.wpi.first.wpilibj.templates.Wiring;
 public class Kicker extends Subsystem {
     
     //Have to wait as we may be changing what we use
-    DigitalInput lightSensor;
+    DigitalInput lightSensor1;
     Jaguar kickerJag;
     
     public Kicker() {
-        lightSensor = new DigitalInput(Wiring.lightSensor);
+        lightSensor1 = new DigitalInput(Wiring.lightSensor);
+        
         //try {
       kickerJag = new Jaguar(Wiring.kickerJag);
         //}catch(CANTimeoutException ex) {
@@ -35,9 +36,8 @@ public class Kicker extends Subsystem {
     // here. Call these from Commands.
     
     public boolean ReturnLightSensorValue() {
-        boolean tripped = lightSensor.get();
-        SmartDashboard.putBoolean("light sensor choo choo ", lightSensor.get()); 
-        return tripped;
+        SmartDashboard.putBoolean("light sensor choo choo ", lightSensor1.get()); 
+        return lightSensor1.get();
     }
     
     public void KickerOpenLoop(double value){

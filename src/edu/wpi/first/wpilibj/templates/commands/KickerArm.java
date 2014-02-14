@@ -32,7 +32,7 @@ public class KickerArm extends CommandBase {
          * up yet because we don't know what to declare the sensor as
          * or even what sensor we are using
         */
-        if (kicker.ReturnLightSensorValue()) {
+        if (!kicker.ReturnLightSensorValue()) {
             done = true;
         }
         else {
