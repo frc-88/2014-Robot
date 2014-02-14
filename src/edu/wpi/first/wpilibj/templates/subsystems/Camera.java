@@ -53,16 +53,18 @@ public class Camera extends Subsystem {
 
     //Maximum number of particles to process
     final int MAX_PARTICLES = 8;
+
+    // Adjusted HUE values based on picture taken 2/12
     //Minimum hue setting
-    private static final int HUE_MIN = 50;
+    private static final int HUE_MIN = 80;
     //Maximum hue setting
-    private static final int HUE_MAX = 100;
+    private static final int HUE_MAX = 110;
     //Minimum saturation setting
     private static final int SAT_MIN = 100;
     //Maximum saturation setting
     private static final int SAT_MAX = 255;
     //Minimum value setting
-    private static final int VAL_MIN = 130;
+    private static final int VAL_MIN = 100;
     //Maximum value setting
     private static final int VAL_MAX = 255;
     //ideal vertical aspect ratio
