@@ -52,14 +52,6 @@ public class Drive extends Subsystem {
     }
 
     /**
-     * Returns whether or not Drive is in ClosedLoop. If it is it will return
-     * true and if it is not it will return false.
-     */
-    public boolean isClosedLoop() {
-        return (lPair.isClosedLoop() && rPair.isClosedLoop());
-    }
-
-    /**
      * Drives the robot in closed loop
      *
      * @param speedLeft joystick value passed in

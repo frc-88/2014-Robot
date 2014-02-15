@@ -25,18 +25,17 @@ public class JagPair implements PIDOutput {
     private Jaguar jag1, jag2;
     private Encoder encoder;
     private PIDController controller;
-    
+    private String name;
+    private boolean m_closedLoop = false;
+    private boolean m_fault = false;
     // private double last_speedL = 0.0;
     // private double last_speedR = 0.0;
-    private boolean m_closedLoop;
-    private boolean m_fault;
-    private String name;
 
     public JagPair(String nameIn, int jag1In, int jag2In, int encoderA, int encoderB) {
+        name = nameIn;
+        
         jag1 = new Jaguar(jag1In);
         jag2 = new Jaguar(jag2In);
-        
-        name = nameIn;
         
         encoder = new Encoder(encoderA, encoderB);
         encoder.setDistancePerPulse(DISTANCE_PER_PULSE);
@@ -44,7 +43,6 @@ public class JagPair implements PIDOutput {
         encoder.setPIDSourceParameter(PIDSource.PIDSourceParameter.kRate);
         encoder.reset();
         encoder.start();
-
     }
 
     /**
@@ -55,40 +53,31 @@ public class JagPair implements PIDOutput {
     }
     
     public void enableClosedLoop(double p, double i, double d) {
-        System.out.println("Enabling closed loop control " + name);
-
-        if (jag1 != null && jag2 != null) {
-            System.out.println(name + " jag1 is " + jag1);
-            System.out.println(name + " jag2 is " + jag2);
-
+        if (m_closedLoop) {
+            System.out.println(name + " closed loop already enabled!");
+        } else {
             // set the motors to closed loop
             //may be percent v bus
             controller = new PIDController(p, i, d, f, encoder, this, cycleTime);
-
-
             // set the enable flag
             m_closedLoop = true;
+            controller.enable();
+            System.out.println(name + " closed loop enabled.");
         }
-        controller.enable();
     }
 
     /**
      * Disables the Drive closed loop and puts it into open loop.
      */
     public void disableClosedLoop() {
-        if (jag1 != null && jag2 != null) {
+        if (!m_closedLoop) {
+            System.out.println(name + " closed loop already disabled!");
+        } else {
             // set the enable flag to false
             m_closedLoop = false;
+            controller.disable();
+            System.out.println(name + " closed loop disabled.");
         }
-        controller.disable();
-    }
-
-    /**
-     * Returns whether or not jagPair is in ClosedLoop. If it is it will return
-     * true and if it is not it will return false.
-     */
-    public boolean isClosedLoop() {
-        return m_closedLoop;
     }
 
     /**
@@ -170,6 +159,5 @@ public class JagPair implements PIDOutput {
     public void pidWrite(double output) {
         jag1.pidWrite(output);
         jag2.pidWrite(output);
-
     }
 }
