@@ -12,18 +12,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class JagPair implements PIDOutput {
 
-    private static final double p = .05;
-    private static final double i = 0.0;
-    private static final double d = 0.0;
+    private static final double pDefault = .05;
+    private static final double iDefault = 0.0;
+    private static final double dDefault = 0.0;
     private static final double f = 0.2;
     private static final double cycleTime = .020;
     private static byte jagGroup = 1;
     private static final int DRIVE_ENCODER_LINES = 250;
     //feet per revolution over encoder lines
     private static final double DISTANCE_PER_PULSE = 1.57 / 250;
+    
     private Jaguar jag1, jag2;
     private Encoder encoder;
     private PIDController controller;
+    
     // private double last_speedL = 0.0;
     // private double last_speedR = 0.0;
     private boolean m_closedLoop;
@@ -49,6 +51,10 @@ public class JagPair implements PIDOutput {
      * Enables ClosedLoop control Driving. It sets it to speed.
      */
     public void enableClosedLoop() {
+        enableClosedLoop(pDefault, iDefault, dDefault);
+    }
+    
+    public void enableClosedLoop(double p, double i, double d) {
         System.out.println("Enabling closed loop control " + name);
 
         if (jag1 != null && jag2 != null) {
