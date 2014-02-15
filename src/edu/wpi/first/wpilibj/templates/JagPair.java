@@ -28,11 +28,14 @@ public class JagPair implements PIDOutput {
     // private double last_speedR = 0.0;
     private boolean m_closedLoop;
     private boolean m_fault;
+    private String name;
 
-    public JagPair(int jag1In, int jag2In, int encoderA, int encoderB) {
+    public JagPair(String nameIn, int jag1In, int jag2In, int encoderA, int encoderB) {
         jag1 = new Jaguar(jag1In);
         jag2 = new Jaguar(jag2In);
-
+        
+        name = nameIn;
+        
         encoder = new Encoder(encoderA, encoderB);
         encoder.setDistancePerPulse(DISTANCE_PER_PULSE);
         encoder.setSamplesToAverage(6);
@@ -47,11 +50,11 @@ public class JagPair implements PIDOutput {
      * Enables ClosedLoop control Driving. It sets it to speed.
      */
     public void enableClosedLoop() {
-        System.out.println("Enabling closed loop control");
+        System.out.println("Enabling closed loop control " + name);
 
         if (jag1 != null && jag2 != null) {
-            System.out.println("jag1 is " + jag1);
-            System.out.println("jag2 is " + jag2);
+            System.out.println(name + " jag1 is " + jag1);
+            System.out.println(name + " jag2 is " + jag2);
 
             // set the motors to closed loop
             //may be percent v bus
@@ -136,7 +139,7 @@ public class JagPair implements PIDOutput {
 //        last_speedR = rSpeed;
     }
 
-    public void updateSmartDashboard(String name) {
+    public void updateSmartDashboard() {
         SmartDashboard.putNumber(name + " speed actual ", encoder.getRate());
     }
 

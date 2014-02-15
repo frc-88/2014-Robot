@@ -19,9 +19,9 @@ public class Drive extends Subsystem {
     private JagPair rPair;    
     
     public Drive() {
-        lPair = new JagPair(Wiring.leftDrive, Wiring.leftDrive2,
+        lPair = new JagPair("left", Wiring.leftDrive, Wiring.leftDrive2,
                 Wiring.lEncoderAChannel, Wiring.lEncoderBChannel);
-        rPair = new JagPair(Wiring.rightDrive, Wiring.rightDrive2,
+        rPair = new JagPair("right", Wiring.rightDrive, Wiring.rightDrive2,
                 Wiring.rEncoderAChannel, Wiring.rEncoderBChannel);
 
         m_LowShifter = new Solenoid(Wiring.highShifter);
@@ -74,8 +74,8 @@ public class Drive extends Subsystem {
         
         SmartDashboard.putNumber("left speed requested ", speedLeft);
         SmartDashboard.putNumber("right speed requested ", speedRight);
-        lPair.updateSmartDashboard("left");
-        rPair.updateSmartDashboard("right");
+        lPair.updateSmartDashboard();
+        rPair.updateSmartDashboard();
     }
     
     public void driveTankOpenLoop(double left, double right) {
