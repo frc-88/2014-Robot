@@ -20,13 +20,17 @@ public class JagPair implements PIDOutput {
     private static final double FEET_PER_REVOLUTION = 1.57;
     //feet per revolution over encoder lines
     private static final double DISTANCE_PER_PULSE = FEET_PER_REVOLUTION / DRIVE_ENCODER_LINES;
+    private static final int SAMPLES_TO_AVERAGE = 6;
     private static final double RAMP_RATE = 0.1;
+    private static final double MAX_SPEED_HIGH_GEAR = 12.4; // feet per second
+    private static final double MAX_SPEED_LOW_GEAR = 5.2;   // feet per second
 
-    private Jaguar jag1, jag2;
-    private Encoder encoder;
+    private final Jaguar jag1, jag2;
+    private final Encoder encoder;
+    private final String name;
     private PIDController controller;
-    private String name;
     private boolean m_closedLoop = false;
+    // We never set m_fault...can we remove it?
     private boolean m_fault = false;
     private double last_speed = 0.0;
 
@@ -38,7 +42,7 @@ public class JagPair implements PIDOutput {
 
         encoder = new Encoder(encoderA, encoderB);
         encoder.setDistancePerPulse(DISTANCE_PER_PULSE);
-        encoder.setSamplesToAverage(6);
+        encoder.setSamplesToAverage(SAMPLES_TO_AVERAGE);
         encoder.setPIDSourceParameter(PIDSource.PIDSourceParameter.kRate);
         encoder.reset();
         encoder.start();
@@ -81,11 +85,17 @@ public class JagPair implements PIDOutput {
 
     /**
      * Returns the value of the fault flag
+     * @return true if there is a fault
      */
     public boolean getFault() {
         return m_fault;
     }
 
+    /**
+     * Drives the robot in open loop
+     * 
+     * @param x usually joystick value passed in
+     */
     public void setX(double x) {
         SmartDashboard.putNumber(name + " speed requested", x);
         x = applyRampRate(x);
@@ -97,21 +107,13 @@ public class JagPair implements PIDOutput {
     /**
      * Drives the robot in closed loop
      *
-     * @param speed usually joystick value passed in
+     * @param speedIn usually joystick value passed in
+     * @param isHighGear true if in high gear
      */
     public void setSpeed(double speedIn, boolean isHighGear) {
-        double maxSpeedHighGear = 12.4; // feet per second
-        double maxSpeedLowGear = 5.2;   // feet per second
-        double maxSpeed;
-        double speed;
+        double maxSpeed = isHighGear ? MAX_SPEED_HIGH_GEAR : MAX_SPEED_LOW_GEAR;
+        double speed = applyRampRate(speedIn);
         
-        if (isHighGear) {
-            maxSpeed = maxSpeedHighGear;
-        } else {
-            maxSpeed = maxSpeedLowGear;
-        }
-
-        speed = applyRampRate(speedIn);
         speed = speed * maxSpeed;
 
         SmartDashboard.putNumber(name + " speed requested ", speedIn);
@@ -133,7 +135,7 @@ public class JagPair implements PIDOutput {
     }
 
     /**
-     * @returns speed of wheels
+     * @return speed of wheels
      */
     public double getSpeed() {
         return encoder.getRate();
