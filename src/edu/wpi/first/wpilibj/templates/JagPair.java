@@ -43,7 +43,6 @@ public class JagPair implements PIDOutput {
         encoder.reset();
         encoder.start();
 
-        controller = new PIDController(p, i, d, f, encoder, this, cycleTime);
     }
 
     /**
@@ -58,7 +57,8 @@ public class JagPair implements PIDOutput {
 
             // set the motors to closed loop
             //may be percent v bus
-            controller.setPID(p, i, d, f);
+            controller = new PIDController(p, i, d, f, encoder, this, cycleTime);
+
 
             // set the enable flag
             m_closedLoop = true;
@@ -74,7 +74,7 @@ public class JagPair implements PIDOutput {
             // set the enable flag to false
             m_closedLoop = false;
         }
-        controller.disable();
+        controller.disable();s
     }
 
     /**
