@@ -63,8 +63,8 @@ public class Drive extends Subsystem {
      * @param speedRight joystick value passed in
      */
     public void driveTankClosedLoop(double speedLeft, double speedRight) {
-        lPair.setSpeed(-speedLeft, getGearing());
-        rPair.setSpeed(speedRight, getGearing());
+        lPair.setSpeed(speedLeft, getGearing());
+        rPair.setSpeed(-speedRight, getGearing());
     }
     
     /**
@@ -74,8 +74,8 @@ public class Drive extends Subsystem {
      * @param right joystick value passed in
      */
     public void driveTankOpenLoop(double left, double right) {        
-        lPair.setX(-left);
-        rPair.setX(right);
+        lPair.setX(left);
+        rPair.setX(-right);
     }
 
     /**

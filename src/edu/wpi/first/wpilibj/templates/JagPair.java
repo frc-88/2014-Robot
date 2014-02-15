@@ -11,18 +11,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author TJ^2 Programming Team
  */
 public class JagPair implements PIDOutput {
-
-    private static final double pDefault = .05;
-    private static final double iDefault = 0.0;
-    private static final double dDefault = 0.0;
+    private static final double P_DEFAULT = .05;
+    private static final double I_DEFAULT = 0.0;
+    private static final double D_DEFAULT = 0.0;
     private static final double f = 0.2;
-    private static final double cycleTime = .020;
-
+    private static final double CYCLE_TIME = .020;
     private static final int DRIVE_ENCODER_LINES = 250;
     private static final double FEET_PER_REVOLUTION = 1.57;
     //feet per revolution over encoder lines
     private static final double DISTANCE_PER_PULSE = FEET_PER_REVOLUTION / DRIVE_ENCODER_LINES;
-    //private static final double RAMP_RATE = 30;
+    private static final double RAMP_RATE = 0.1;
 
     private Jaguar jag1, jag2;
     private Encoder encoder;
@@ -30,7 +28,7 @@ public class JagPair implements PIDOutput {
     private String name;
     private boolean m_closedLoop = false;
     private boolean m_fault = false;
-    // private double last_speed = 0.0;
+    private double last_speed = 0.0;
 
     public JagPair(String nameIn, int jag1In, int jag2In, int encoderA, int encoderB) {
         name = nameIn;
@@ -50,7 +48,7 @@ public class JagPair implements PIDOutput {
      * Enables ClosedLoop control Driving. It sets it to speed.
      */
     public void enableClosedLoop() {
-        enableClosedLoop(pDefault, iDefault, dDefault);
+        enableClosedLoop(P_DEFAULT, I_DEFAULT, D_DEFAULT);
     }
 
     public void enableClosedLoop(double p, double i, double d) {
@@ -59,7 +57,7 @@ public class JagPair implements PIDOutput {
         } else {
             // set the motors to closed loop
             //may be percent v bus
-            controller = new PIDController(p, i, d, f, encoder, this, cycleTime);
+            controller = new PIDController(p, i, d, f, encoder, this, CYCLE_TIME);
             // set the enable flag
             m_closedLoop = true;
             controller.enable();
@@ -89,10 +87,11 @@ public class JagPair implements PIDOutput {
     }
 
     public void setX(double x) {
-        SmartDashboard.putNumber(name + " speed requested ", x);
+        SmartDashboard.putNumber(name + " speed requested", x);
+        x = applyRampRate(x);
+        SmartDashboard.putNumber(name + " speed adjusted", x);
         jag1.set(x);
         jag2.set(x);
-
     }
 
     /**
@@ -101,29 +100,20 @@ public class JagPair implements PIDOutput {
      * @param speed usually joystick value passed in
      */
     public void setSpeed(double speedIn, boolean isHighGear) {
-
         double maxSpeedHighGear = 12.4; // feet per second
         double maxSpeedLowGear = 5.2;   // feet per second
-        double maxSpeed = 0;
-
+        double maxSpeed;
+        double speed;
+        
         if (isHighGear) {
             maxSpeed = maxSpeedHighGear;
         } else {
             maxSpeed = maxSpeedLowGear;
         }
 
-        double speed = speedIn * maxSpeed;
+        speed = applyRampRate(speedIn);
+        speed = speed * maxSpeed;
 
-//        apply ramp rate
-//        if(speed - last_speed > RAMP_RATE) {
-//            speed = last_speed + RAMP_RATE;
-//        } else if(speed - last_speed < -RAMP_RATE) {
-//            speed = last_speed - RAMP_RATE;
-//        }
-//        last_speed = speed;
-        //double speedError = (encoder.getRate() - speed);
-        //if (controller.onTarget()) {
-        //} 
         SmartDashboard.putNumber(name + " speed requested ", speedIn);
         SmartDashboard.putNumber(name + " speed actual ", getSpeed());
         SmartDashboard.putNumber(name + " new setpoint ", speed);
@@ -131,8 +121,15 @@ public class JagPair implements PIDOutput {
         controller.setSetpoint(speed);
     }
 
-    public void updateSmartDashboard() {
-        SmartDashboard.putNumber(name + " speed actual ", encoder.getRate());
+    private double applyRampRate(double speed) {
+        if(speed - last_speed > RAMP_RATE) {
+            speed = last_speed + RAMP_RATE;
+        } else if(speed - last_speed < -RAMP_RATE) {
+            speed = last_speed - RAMP_RATE;
+        }
+        last_speed = speed;
+        
+        return speed;
     }
 
     /**
