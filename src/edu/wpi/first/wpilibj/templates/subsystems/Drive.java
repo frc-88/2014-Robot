@@ -13,8 +13,15 @@ import edu.wpi.first.wpilibj.templates.commands.DrivewithControllerOpen;
  * @author TJ^2 Programming Team
  */
 public class Drive extends Subsystem {
-    Solenoid m_LowShifter;
-    Solenoid m_HighShifter;
+//    private static final double leftP = 0.05;
+//    private static final double leftI = 0.0;
+//    private static final double leftD = 0.0;
+//    private static final double rightP = 0.05;
+//    private static final double rightI = 0.0;
+//    private static final double rightD = 0.0;
+
+    private Solenoid m_LowShifter;
+    private Solenoid m_HighShifter;
     private JagPair lPair;
     private JagPair rPair;    
     
@@ -32,11 +39,13 @@ public class Drive extends Subsystem {
     }
 
     /**
-     * Enables ClosedLoop control Driving. It sets it to speed.
+     * Enables Closed Loop control Driving.
      */
     public void enableClosedLoop() {
         lPair.enableClosedLoop();
         rPair.enableClosedLoop();
+//        lPair.enableClosedLoop(leftP, leftI, leftD);
+//        rPair.enableClosedLoop(rightP, rightI, rightD);
     }
 
     /**
@@ -48,7 +57,7 @@ public class Drive extends Subsystem {
     }
 
     /**
-     * Drives the robot in closed loop
+     * Drives in closed loop
      *
      * @param speedLeft joystick value passed in
      * @param speedRight joystick value passed in
@@ -58,6 +67,12 @@ public class Drive extends Subsystem {
         rPair.setSpeed(speedRight, getGearing());
     }
     
+    /**
+     * Drive in open loop
+     * 
+     * @param left joystick value passed in
+     * @param right joystick value passed in
+     */
     public void driveTankOpenLoop(double left, double right) {        
         lPair.setX(-left);
         rPair.setX(right);
@@ -113,7 +128,7 @@ public class Drive extends Subsystem {
     }
 
     /**
-     * Returns the value of the fault flag
+     * Returns true if either JagPair has a fault
      */
     public boolean getFault() {
         return (lPair.getFault() || rPair.getFault());
