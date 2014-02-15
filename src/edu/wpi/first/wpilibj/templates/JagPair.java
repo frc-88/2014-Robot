@@ -74,7 +74,7 @@ public class JagPair implements PIDOutput {
             // set the enable flag to false
             m_closedLoop = false;
         }
-        controller.disable();s
+        controller.disable();
     }
 
     /**
