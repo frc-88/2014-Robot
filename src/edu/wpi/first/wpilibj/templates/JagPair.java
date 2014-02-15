@@ -21,6 +21,7 @@ public class JagPair implements PIDOutput {
     private static final int DRIVE_ENCODER_LINES = 250;
     //feet per revolution over encoder lines
     private static final double DISTANCE_PER_PULSE = 1.57 / 250;
+    //private static final double RAMP_RATE = 30;
     
     private Jaguar jag1, jag2;
     private Encoder encoder;
@@ -28,8 +29,7 @@ public class JagPair implements PIDOutput {
     private String name;
     private boolean m_closedLoop = false;
     private boolean m_fault = false;
-    // private double last_speedL = 0.0;
-    // private double last_speedR = 0.0;
+    // private double last_speed = 0.0;
 
     public JagPair(String nameIn, int jag1In, int jag2In, int encoderA, int encoderB) {
         name = nameIn;
@@ -113,25 +113,23 @@ public class JagPair implements PIDOutput {
 
         double speed = speedIn * maxSpeed;
 
-        //double speedError = (encoder.getRate() - speed);
-        //     if (controller.onTarget()) {
-        controller.setSetpoint(speed);
+//        apply ramp rate
+//        if(speed - last_speed > RAMP_RATE) {
+//            speed = last_speed + RAMP_RATE;
+//        } else if(speed - last_speed < -RAMP_RATE) {
+//            speed = last_speed - RAMP_RATE;
+//        }
+//        last_speed = speed;
 
-//  TODO Needs to be refactored for JagPair
-//        double RAMP_RATE = 30;
-//
-//        if(lSpeed - last_speedL > RAMP_RATE) {
-//            lSpeed = last_speedL + RAMP_RATE;
-//        } else if(lSpeed - last_speedL < -RAMP_RATE) {
-//            lSpeed = last_speedL - RAMP_RATE;
-//        }
-//        if(rSpeed - last_speedR > RAMP_RATE) {
-//            rSpeed = last_speedR + RAMP_RATE;
-//        } else if(rSpeed - last_speedR < -RAMP_RATE) {
-//            rSpeed = last_speedR - RAMP_RATE;
-//        }
-//        last_speedL = lSpeed;
-//        last_speedR = rSpeed;
+        //double speedError = (encoder.getRate() - speed);
+        //if (controller.onTarget()) {
+        //} 
+
+        SmartDashboard.putNumber(name + " speed requested ", speedIn);
+        SmartDashboard.putNumber(name + " speed actual ", getSpeed());
+        SmartDashboard.putNumber(name + " new setpoint ", speed);
+
+        controller.setSetpoint(speed);
     }
 
     public void updateSmartDashboard() {

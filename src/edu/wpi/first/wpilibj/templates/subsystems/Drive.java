@@ -60,14 +60,6 @@ public class Drive extends Subsystem {
     public void driveTankClosedLoop(double speedLeft, double speedRight) {
         lPair.setSpeed(-speedLeft, getGearing());
         rPair.setSpeed(speedRight, getGearing());
-
-        System.out.println("l side " + lPair.getSpeed());
-        System.out.println("r side " + rPair.getSpeed());
-        
-        SmartDashboard.putNumber("left speed requested ", speedLeft);
-        SmartDashboard.putNumber("right speed requested ", speedRight);
-        lPair.updateSmartDashboard();
-        rPair.updateSmartDashboard();
     }
     
     public void driveTankOpenLoop(double left, double right) {
