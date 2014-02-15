@@ -22,7 +22,7 @@ public abstract class CommandBase extends Command {
 //    public static Compressorr compressor = new Compressorr();
     private static Compressor compressor;
     public static Rollers roller = new Rollers();
-    public static ArmFeeder arm = new ArmFeeder();
+    public static Arms arm = new Arms();
     public static Kicker kicker = new Kicker();
     
     public static void init() {

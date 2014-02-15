@@ -14,14 +14,14 @@ import edu.wpi.first.wpilibj.templates.Wiring;
  *
  * @author David
  */
-public class ArmFeeder extends Subsystem {
+public class Arms extends Subsystem {
     
     Solenoid lArmSolenoid1;
     Solenoid rArmSolenoid1;
     Solenoid lArmSolenoid2;
     Solenoid rArmSolenoid2;
     
-    public ArmFeeder() {
+    public Arms() {
         lArmSolenoid1 = new Solenoid(Wiring.lArm1);
         rArmSolenoid1 = new Solenoid(Wiring.rArm1);
         lArmSolenoid2 = new Solenoid(Wiring.lArm2);
