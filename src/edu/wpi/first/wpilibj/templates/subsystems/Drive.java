@@ -35,8 +35,6 @@ public class Drive extends Subsystem {
      * Enables ClosedLoop control Driving. It sets it to speed.
      */
     public void enableClosedLoop() {
-        System.out.println("Enabling closed loop control");
-
         lPair.enableClosedLoop();
         rPair.enableClosedLoop();
     }
@@ -45,8 +43,6 @@ public class Drive extends Subsystem {
      * Disables the Drive closed loop and puts it into open loop.
      */
     public void disableClosedLoop() {
-        System.out.println("Disabling closed loop control");
-       
         lPair.disableClosedLoop();
         rPair.disableClosedLoop();
     }
@@ -62,10 +58,7 @@ public class Drive extends Subsystem {
         rPair.setSpeed(speedRight, getGearing());
     }
     
-    public void driveTankOpenLoop(double left, double right) {
-        SmartDashboard.putNumber("left speed requested ", -left);
-        SmartDashboard.putNumber("right speed requested ", right);
-        
+    public void driveTankOpenLoop(double left, double right) {        
         lPair.setX(-left);
         rPair.setX(right);
     }

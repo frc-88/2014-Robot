@@ -22,7 +22,7 @@ public class JagPair implements PIDOutput {
     //feet per revolution over encoder lines
     private static final double DISTANCE_PER_PULSE = 1.57 / 250;
     //private static final double RAMP_RATE = 30;
-    
+
     private Jaguar jag1, jag2;
     private Encoder encoder;
     private PIDController controller;
@@ -33,10 +33,10 @@ public class JagPair implements PIDOutput {
 
     public JagPair(String nameIn, int jag1In, int jag2In, int encoderA, int encoderB) {
         name = nameIn;
-        
+
         jag1 = new Jaguar(jag1In);
         jag2 = new Jaguar(jag2In);
-        
+
         encoder = new Encoder(encoderA, encoderB);
         encoder.setDistancePerPulse(DISTANCE_PER_PULSE);
         encoder.setSamplesToAverage(6);
@@ -51,7 +51,7 @@ public class JagPair implements PIDOutput {
     public void enableClosedLoop() {
         enableClosedLoop(pDefault, iDefault, dDefault);
     }
-    
+
     public void enableClosedLoop(double p, double i, double d) {
         if (m_closedLoop) {
             System.out.println(name + " closed loop already enabled!");
@@ -88,10 +88,10 @@ public class JagPair implements PIDOutput {
     }
 
     public void setX(double x) {
-        if (jag1 != null || jag2 != null) {
-            jag1.set(x);
-            jag2.set(x);
-        }
+        SmartDashboard.putNumber(name + " speed requested ", x);
+        jag1.set(x);
+        jag2.set(x);
+
     }
 
     /**
@@ -120,11 +120,9 @@ public class JagPair implements PIDOutput {
 //            speed = last_speed - RAMP_RATE;
 //        }
 //        last_speed = speed;
-
         //double speedError = (encoder.getRate() - speed);
         //if (controller.onTarget()) {
         //} 
-
         SmartDashboard.putNumber(name + " speed requested ", speedIn);
         SmartDashboard.putNumber(name + " speed actual ", getSpeed());
         SmartDashboard.putNumber(name + " new setpoint ", speed);
