@@ -16,18 +16,22 @@ public class Arms extends Subsystem {
     private final Solenoid lArmSolenoid1;
     private final Solenoid lArmSolenoid2;
     
+    
     public Arms() {
         rArmSolenoid1 = new Solenoid(Wiring.rArm1);
         rArmSolenoid2 = new Solenoid(Wiring.rArm2);
         lArmSolenoid1 = new Solenoid(Wiring.lArm1);
         lArmSolenoid2 = new Solenoid(Wiring.lArm2);
+        
 
         rArmSolenoid1.set(true);
         rArmSolenoid2.set(false);
         lArmSolenoid1.set(true);
         lArmSolenoid2.set(false);
     }
-    
+    /**
+     * Method that activates the arm solenoids so the arm moves up
+     */
     public void ArmUp() {
         System.out.println("Attempting to move arm up");
 
@@ -40,6 +44,9 @@ public class Arms extends Subsystem {
         SmartDashboard.putBoolean("l arm solenoid1", lArmSolenoid1.get());
     }
     
+    /**
+     * Method that activates the arm solenoids so the arm moves down 
+     */
     public void ArmDown() {
         System.out.println("Attempting to move arm down");
 

@@ -44,6 +44,7 @@ public class OI {
         operatorButtonX.whenReleased(new KickerStop());
         operatorButtonB.whenPressed(new KickerArm());
         operatorButtonB.whenReleased(new KickerStop());
+        operatorButtonLeftBumper.whenPressed((new GetUpdatedDistance()));
         //runs command CalculateDistance when Y is pressed
 //        driverButtonY.whenPressed(new GetUpdatedDistance());
         //operatorButtonY.whenPressed(new GetUpdatedDistance());

@@ -5,27 +5,25 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
-import edu.wpi.first.wpilibj.templates.subsystems.Camera;
-
 /**
  *
  * @author David
  */
 public class CalculateHotGoal extends CommandBase {
     
-    double delay;
+    double timeout;
     boolean done = false;
     int count = 0;
-    public CalculateHotGoal(double timeout) {
+    public CalculateHotGoal(double time) {
         super("CameraHotGoal");
-        delay=timeout;
+        timeout=time;
         requires(camera);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
         done = false;
-        setTimeout(delay);
+        setTimeout(timeout);
     }
 
     // Called repeatedly when this Command is scheduled to run

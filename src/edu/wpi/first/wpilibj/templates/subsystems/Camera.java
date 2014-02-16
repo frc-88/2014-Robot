@@ -1,13 +1,11 @@
 package edu.wpi.first.wpilibj.templates.subsystems;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.image.*;
 import edu.wpi.first.wpilibj.image.NIVision.MeasurementType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.templates.commands.CalculateHotGoal;
 
 /**
  * Sample program to use NIVision to find rectangles in the scene that are
@@ -75,6 +73,8 @@ public class Camera extends Subsystem {
     AxisCamera camera;          // the axis camera object (connected to the switch)
     CriteriaCollection cc;      // the criteria for doing the particle filter operation
     ColorImage image;
+    
+    private boolean firstGrab = false;
 
     public class Scores {
 
@@ -123,6 +123,10 @@ public class Camera extends Subsystem {
                     image.free();
                 }
                 image = camera.getImage();
+                if (!firstGrab){
+                    image.write("image.jpg");
+                    firstGrab = true;
+                }
             } catch (AxisCameraException ex) {
 
             } catch (NIVisionException ex) {
