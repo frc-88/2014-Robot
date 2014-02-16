@@ -44,6 +44,9 @@ public class Wiring {
     public static final int lArm2 = 8;
     public static final int rArm1 = 4;
     public static final int rArm2 = 5;
+    //wrong values
+    public static final int armRise = 10;
+    public static final int armFall = 11;
     
     /*
      * ### Compressor ###
