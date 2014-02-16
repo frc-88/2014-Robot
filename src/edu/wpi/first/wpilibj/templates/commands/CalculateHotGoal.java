@@ -33,8 +33,8 @@ public class CalculateHotGoal extends CommandBase {
         if (count % 50 == 0) {
             camera.grabImage();
             done = camera.findHotGoal();
-            count++;
         }
+        count++;
         
     }
 

@@ -1,53 +1,37 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
 /**
  *
- * @author David
+ * @author TJ2
  */
-public class KickerFire extends CommandBase {
-    
+public class KickerAuto extends CommandBase {
+    double timeout;
     double power = -1;
-    boolean shouldKick;
-    boolean done;
-    
-    public KickerFire() {
-        super("kicking the ball");
+    public KickerAuto(double time) {
+        super("kicker auto");
         requires(kicker);
+        timeout = time;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-//        if (!kicker.ReturnLightSensorValue()) {
-//            shouldKick = true;
-//        }
+        setTimeout(timeout);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         kicker.KickerOpenLoop(power);
-//        if (shouldKick) {
-//            kicker.KickerOpenLoop(power);
-//        }
-//        if (kicker.ReturnLightSensorValue()) {
-//            shouldKick = false;
-//            done = true;
-//        }
-//        System.out.println(shouldKick);
-//        System.out.println("printing light sensor " + kicker.ReturnLightSensorValue());      
-//
-//       Run until the light sensor changes, then done = true        
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true

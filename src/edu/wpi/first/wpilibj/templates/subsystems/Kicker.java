@@ -19,33 +19,30 @@ import edu.wpi.first.wpilibj.templates.Wiring;
  */
 public class Kicker extends Subsystem {
     
-    //Have to wait as we may be changing what we use
     DigitalInput lightSensor1;
     Jaguar kickerJag;
     
     public Kicker() {
-        lightSensor1 = new DigitalInput(Wiring.lightSensor);
-        
-        //try {
+      lightSensor1 = new DigitalInput(Wiring.lightSensor);
       kickerJag = new Jaguar(Wiring.kickerJag);
-        //}catch(CANTimeoutException ex) {
-                //SmartDashboard.putBoolean("CAN ERROR choo choo", true);
-        //}
     }
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
     
+    /**
+     * Method for returning the value of the light sensor
+     * @return lightsensor value
+     */
     public boolean ReturnLightSensorValue() {
         SmartDashboard.putBoolean("light sensor choo choo ", lightSensor1.get()); 
         return lightSensor1.get();
     }
     
+    /**
+     * Method that gives the kicker a value for power
+     * @param value within 1 and -1
+     */
     public void KickerOpenLoop(double value){
-        //try{
             kickerJag.set(value);
-        //}catch(CANTimeoutException ex){
             SmartDashboard.putDouble("kicker power", value);
-        //}
     }
 
     public void initDefaultCommand() {
