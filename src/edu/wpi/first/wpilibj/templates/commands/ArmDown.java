@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.wpi.first.wpilibj.templates.commands;
 
 /**
@@ -10,16 +5,12 @@ package edu.wpi.first.wpilibj.templates.commands;
  * @author David
  */
 public class ArmDown extends CommandBase {
-    
-    private boolean done;
+
     private double m_timeout = 0.5;
 
     public ArmDown() {
-        super("Arm down");
+        super("ArmDown");
         requires(arm);
-        
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time

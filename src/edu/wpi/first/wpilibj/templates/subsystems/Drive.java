@@ -13,15 +13,22 @@ import edu.wpi.first.wpilibj.templates.commands.DrivewithControllerOpen;
  * @author TJ^2 Programming Team
  */
 public class Drive extends Subsystem {
-    Solenoid m_LowShifter;
-    Solenoid m_HighShifter;
+//    private static final double leftP = 0.05;
+//    private static final double leftI = 0.0;
+//    private static final double leftD = 0.0;
+//    private static final double rightP = 0.05;
+//    private static final double rightI = 0.0;
+//    private static final double rightD = 0.0;
+
+    private Solenoid m_LowShifter;
+    private Solenoid m_HighShifter;
     private JagPair lPair;
     private JagPair rPair;    
     
     public Drive() {
-        lPair = new JagPair(Wiring.leftDrive, Wiring.leftDrive2,
+        lPair = new JagPair("left", Wiring.leftDrive, Wiring.leftDrive2,
                 Wiring.lEncoderAChannel, Wiring.lEncoderBChannel);
-        rPair = new JagPair(Wiring.rightDrive, Wiring.rightDrive2,
+        rPair = new JagPair("right", Wiring.rightDrive, Wiring.rightDrive2,
                 Wiring.rEncoderAChannel, Wiring.rEncoderBChannel);
 
         m_LowShifter = new Solenoid(Wiring.highShifter);
@@ -32,58 +39,43 @@ public class Drive extends Subsystem {
     }
 
     /**
-     * Enables ClosedLoop control Driving. It sets it to speed.
+     * Enables Closed Loop control Driving.
      */
     public void enableClosedLoop() {
-        System.out.println("Enabling closed loop control");
-
         lPair.enableClosedLoop();
         rPair.enableClosedLoop();
+//        lPair.enableClosedLoop(leftP, leftI, leftD);
+//        rPair.enableClosedLoop(rightP, rightI, rightD);
     }
 
     /**
      * Disables the Drive closed loop and puts it into open loop.
      */
     public void disableClosedLoop() {
-        System.out.println("Disabling closed loop control");
-       
         lPair.disableClosedLoop();
         rPair.disableClosedLoop();
     }
 
     /**
-     * Returns whether or not Drive is in ClosedLoop. If it is it will return
-     * true and if it is not it will return false.
-     */
-    public boolean isClosedLoop() {
-        return (lPair.isClosedLoop() && rPair.isClosedLoop());
-    }
-
-    /**
-     * Drives the robot in closed loop
+     * Drives in closed loop
      *
      * @param speedLeft joystick value passed in
      * @param speedRight joystick value passed in
      */
     public void driveTankClosedLoop(double speedLeft, double speedRight) {
-        lPair.setSpeed(-speedLeft, getGearing());
-        rPair.setSpeed(speedRight, getGearing());
-
-        System.out.println("l side " + lPair.getSpeed());
-        System.out.println("r side " + rPair.getSpeed());
-        
-        SmartDashboard.putNumber("left speed requested ", speedLeft);
-        SmartDashboard.putNumber("right speed requested ", speedRight);
-        lPair.updateSmartDashboard("left");
-        rPair.updateSmartDashboard("right");
+        lPair.setSpeed(speedLeft, getGearing());
+        rPair.setSpeed(-speedRight, getGearing());
     }
     
-    public void driveTankOpenLoop(double left, double right) {
-        SmartDashboard.putNumber("left speed requested ", -left);
-        SmartDashboard.putNumber("right speed requested ", right);
-        
-        lPair.setX(-left);
-        rPair.setX(right);
+    /**
+     * Drive in open loop
+     * 
+     * @param left joystick value passed in
+     * @param right joystick value passed in
+     */
+    public void driveTankOpenLoop(double left, double right) {        
+        lPair.setX(left);
+        rPair.setX(-right);
     }
 
     /**
@@ -136,7 +128,7 @@ public class Drive extends Subsystem {
     }
 
     /**
-     * Returns the value of the fault flag
+     * Returns true if either JagPair has a fault
      */
     public boolean getFault() {
         return (lPair.getFault() || rPair.getFault());

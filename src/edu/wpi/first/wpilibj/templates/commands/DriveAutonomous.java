@@ -42,9 +42,7 @@ public class DriveAutonomous extends CommandBase {
     protected void initialize() {
         double currentDistance;
         
-//        if(!drive.isClosedLoop()) {
-//            drive.enableClosedLoop();
-//        }
+//        drive.enableClosedLoop();
         drive.resetDistance();
         currentDistance = drive.getAverageDistance();
         if(m_backwards) {

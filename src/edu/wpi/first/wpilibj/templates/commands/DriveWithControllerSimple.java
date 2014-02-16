@@ -6,20 +6,18 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class DriveWithControllerSimple extends CommandBase {
 
-    double left;
-    double right;
-
     public DriveWithControllerSimple() {
         super("DriveWithControllerSimple");
         requires(drive);
     }
 
     protected void initialize() {
+        drive.disableClosedLoop();
     }
 
     protected void execute() {
-        left = oi.getDriveLeftVerticalAxis();
-        right = oi.getDriveRightVerticalAxis();
+        double left = oi.getDriveLeftVerticalAxis();
+        double right = oi.getDriveRightVerticalAxis();
 
         drive.driveTankOpenLoop(left, right);
     }

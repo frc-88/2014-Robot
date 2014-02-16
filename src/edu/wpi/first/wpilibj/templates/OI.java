@@ -61,23 +61,22 @@ public class OI {
      * @return value of stick position
      */
     public double getOperatorRightHorizontalAxis() {
-        return deadZoneMap(-operatorController.getRawAxis(4));
+        return deadZoneMap(operatorController.getRawAxis(RIGHT_HORIZ_AXIS));
     }
     
     public double getDriveRightVerticalAxis() {
-        return deadZoneMap(-driverController.getRawAxis(5));
+        return deadZoneMap(driverController.getRawAxis(RIGHT_VERT_AXIS));
     }
     
     public double getDriveRightHorizontalAxis() {
-        return deadZoneMap(-driverController.getRawAxis(4));
+        return deadZoneMap(driverController.getRawAxis(RIGHT_HORIZ_AXIS));
     }
     
     public double getDriveLeftVerticalAxis() {
-        //System.out.println("in = " + -driverController.getRawAxis(2));
-        return deadZoneMap(-driverController.getRawAxis(2));
+        return deadZoneMap(driverController.getRawAxis(LEFT_VERT_AXIS));
     }     
     public double getDriveLeftHorizontalAxis() {
-        return deadZoneMap(driverController.getRawAxis(1));
+        return deadZoneMap(driverController.getRawAxis(LEFT_HORIZ_AXIS));
     }
     public double getOperatorZAxis() {
         return operatorController.getZ();

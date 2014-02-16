@@ -7,23 +7,16 @@ import edu.wpi.first.wpilibj.templates.OI;
 import edu.wpi.first.wpilibj.templates.Wiring;
 import edu.wpi.first.wpilibj.templates.subsystems.*;
 
-/**
- * The base for all commands. All atomic commands should subclass CommandBase.
- * CommandBase stores creates and stores each control system. To access a
- * subsystem elsewhere in your code in your code use CommandBase.exampleSubsystem
- * @author Author
- */
 public abstract class CommandBase extends Command {
     
     public static OI oi;
-    // Create a single static instance of all of your subsystems
     public static Camera camera = new Camera();
     public static Drive drive = new Drive();
-//    public static Compressorr compressor = new Compressorr();
-    private static Compressor compressor;
     public static Rollers roller = new Rollers();
-    public static ArmFeeder arm = new ArmFeeder();
+    public static Arms arm = new Arms();
     public static Kicker kicker = new Kicker();
+    private static Compressor compressor;
+    private static int iterator = 0;
     
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely
@@ -47,7 +40,7 @@ public abstract class CommandBase extends Command {
     public CommandBase(String name) {
         super(name);
     }
-    private static int iterator = 0;
+
     public static void updateDashboard() {
 
         // put data on dashboard every 10th call
@@ -62,19 +55,11 @@ public abstract class CommandBase extends Command {
        // put data on dashboard every 10th call
         if(iterator % 10 == 5) {
             // Various indicators
-//            SmartDashboard.putNumber("Climber position ", climber.getPosition());
-//            SmartDashboard.putNumber("Tilter angle ", tilter.getAngle());
              SmartDashboard.putNumber("Drive (left) ", drive.getLeftSpeed());
              SmartDashboard.putNumber("Drive (right) ", drive.getRightSpeed());
              SmartDashboard.putNumber("DriveDist (left) ", drive.getLeftDistance());
              SmartDashboard.putNumber("DriveDist (right) ", drive.getRightDistance());
-//            SmartDashboard.putNumber("Range Finder ", base.getRangeFinderDist());
-//            
         }
-       
-
-//            SmartDashboard.putNumber("DumperJag Current", dumper.getCurrent());
-
         iterator++;
     }
 

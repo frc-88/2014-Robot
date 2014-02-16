@@ -11,137 +11,131 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author TJ^2 Programming Team
  */
 public class JagPair implements PIDOutput {
-
-    private static final double p = .05;
-    private static final double i = 0.0;
-    private static final double d = 0.0;
+    private static final double P_DEFAULT = .05;
+    private static final double I_DEFAULT = 0.0;
+    private static final double D_DEFAULT = 0.0;
     private static final double f = 0.2;
-    private static final double cycleTime = .020;
-    private static byte jagGroup = 1;
+    private static final double CYCLE_TIME = .020;
     private static final int DRIVE_ENCODER_LINES = 250;
+    private static final double FEET_PER_REVOLUTION = 1.57;
     //feet per revolution over encoder lines
-    private static final double DISTANCE_PER_PULSE = 1.57 / 250;
-    private Jaguar jag1, jag2;
-    private Encoder encoder;
-    private PIDController controller;
-    // private double last_speedL = 0.0;
-    // private double last_speedR = 0.0;
-    private boolean m_closedLoop;
-    private boolean m_fault;
+    private static final double DISTANCE_PER_PULSE = FEET_PER_REVOLUTION / DRIVE_ENCODER_LINES;
+    private static final int SAMPLES_TO_AVERAGE = 6;
+    private static final double RAMP_RATE = 0.1;
+    private static final double MAX_SPEED_HIGH_GEAR = 12.4; // feet per second
+    private static final double MAX_SPEED_LOW_GEAR = 5.2;   // feet per second
 
-    public JagPair(int jag1In, int jag2In, int encoderA, int encoderB) {
+    private final Jaguar jag1, jag2;
+    private final Encoder encoder;
+    private final String name;
+    private PIDController controller;
+    private boolean m_closedLoop = false;
+    // We never set m_fault...can we remove it?
+    private boolean m_fault = false;
+    private double last_speed = 0.0;
+
+    public JagPair(String nameIn, int jag1In, int jag2In, int encoderA, int encoderB) {
+        name = nameIn;
+
         jag1 = new Jaguar(jag1In);
         jag2 = new Jaguar(jag2In);
 
         encoder = new Encoder(encoderA, encoderB);
         encoder.setDistancePerPulse(DISTANCE_PER_PULSE);
-        encoder.setSamplesToAverage(6);
+        encoder.setSamplesToAverage(SAMPLES_TO_AVERAGE);
         encoder.setPIDSourceParameter(PIDSource.PIDSourceParameter.kRate);
         encoder.reset();
         encoder.start();
-
-        controller = new PIDController(p, i, d, f, encoder, this, cycleTime);
     }
 
     /**
      * Enables ClosedLoop control Driving. It sets it to speed.
      */
     public void enableClosedLoop() {
-        System.out.println("Enabling closed loop control");
+        enableClosedLoop(P_DEFAULT, I_DEFAULT, D_DEFAULT);
+    }
 
-        if (jag1 != null && jag2 != null) {
-            System.out.println("jag1 is " + jag1);
-            System.out.println("jag2 is " + jag2);
-
+    public void enableClosedLoop(double p, double i, double d) {
+        if (m_closedLoop) {
+            System.out.println(name + " closed loop already enabled!");
+        } else {
             // set the motors to closed loop
             //may be percent v bus
-            controller.setPID(p, i, d, f);
-
+            controller = new PIDController(p, i, d, f, encoder, this, CYCLE_TIME);
             // set the enable flag
             m_closedLoop = true;
+            controller.enable();
+            System.out.println(name + " closed loop enabled.");
         }
-        controller.enable();
     }
 
     /**
      * Disables the Drive closed loop and puts it into open loop.
      */
     public void disableClosedLoop() {
-        if (jag1 != null && jag2 != null) {
+        if (!m_closedLoop) {
+            System.out.println(name + " closed loop already disabled!");
+        } else {
             // set the enable flag to false
             m_closedLoop = false;
+            controller.disable();
+            System.out.println(name + " closed loop disabled.");
         }
-        controller.disable();
-    }
-
-    /**
-     * Returns whether or not jagPair is in ClosedLoop. If it is it will return
-     * true and if it is not it will return false.
-     */
-    public boolean isClosedLoop() {
-        return m_closedLoop;
     }
 
     /**
      * Returns the value of the fault flag
+     * @return true if there is a fault
      */
     public boolean getFault() {
         return m_fault;
     }
 
+    /**
+     * Drives the robot in open loop
+     * 
+     * @param x usually joystick value passed in
+     */
     public void setX(double x) {
-        if (jag1 != null || jag2 != null) {
-            jag1.set(x);
-            jag2.set(x);
-        }
+        SmartDashboard.putNumber(name + " speed requested", x);
+        x = applyRampRate(x);
+        SmartDashboard.putNumber(name + " speed adjusted", x);
+        jag1.set(x);
+        jag2.set(x);
     }
 
     /**
      * Drives the robot in closed loop
      *
-     * @param speed usually joystick value passed in
+     * @param speedIn usually joystick value passed in
+     * @param isHighGear true if in high gear
      */
     public void setSpeed(double speedIn, boolean isHighGear) {
+        double maxSpeed = isHighGear ? MAX_SPEED_HIGH_GEAR : MAX_SPEED_LOW_GEAR;
+        double speed = applyRampRate(speedIn);
+        
+        speed = speed * maxSpeed;
 
-        double maxSpeedHighGear = 12.4; // feet per second
-        double maxSpeedLowGear = 5.2;   // feet per second
-        double maxSpeed = 0;
+        SmartDashboard.putNumber(name + " speed requested ", speedIn);
+        SmartDashboard.putNumber(name + " speed actual ", getSpeed());
+        SmartDashboard.putNumber(name + " new setpoint ", speed);
 
-        if (isHighGear) {
-            maxSpeed = maxSpeedHighGear;
-        } else {
-            maxSpeed = maxSpeedLowGear;
-        }
-
-        double speed = speedIn * maxSpeed;
-
-        //double speedError = (encoder.getRate() - speed);
-        //     if (controller.onTarget()) {
         controller.setSetpoint(speed);
-
-//  TODO Needs to be refactored for JagPair
-//        double RAMP_RATE = 30;
-//
-//        if(lSpeed - last_speedL > RAMP_RATE) {
-//            lSpeed = last_speedL + RAMP_RATE;
-//        } else if(lSpeed - last_speedL < -RAMP_RATE) {
-//            lSpeed = last_speedL - RAMP_RATE;
-//        }
-//        if(rSpeed - last_speedR > RAMP_RATE) {
-//            rSpeed = last_speedR + RAMP_RATE;
-//        } else if(rSpeed - last_speedR < -RAMP_RATE) {
-//            rSpeed = last_speedR - RAMP_RATE;
-//        }
-//        last_speedL = lSpeed;
-//        last_speedR = rSpeed;
     }
 
-    public void updateSmartDashboard(String name) {
-        SmartDashboard.putNumber(name + " speed actual ", encoder.getRate());
+    private double applyRampRate(double speed) {
+        if(speed - last_speed > RAMP_RATE) {
+            speed = last_speed + RAMP_RATE;
+        } else if(speed - last_speed < -RAMP_RATE) {
+            speed = last_speed - RAMP_RATE;
+        }
+        last_speed = speed;
+        
+        return speed;
     }
 
     /**
-     * @returns speed of wheels
+     * @return speed of wheels
      */
     public double getSpeed() {
         return encoder.getRate();
@@ -161,6 +155,5 @@ public class JagPair implements PIDOutput {
     public void pidWrite(double output) {
         jag1.pidWrite(output);
         jag2.pidWrite(output);
-
     }
 }
