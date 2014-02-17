@@ -40,10 +40,10 @@ public class Wiring {
      * ### Arms ###
      */
     //wrong values
-    public static final int lArm1 = 7;
-    public static final int lArm2 = 8;
-    public static final int rArm1 = 4;
-    public static final int rArm2 = 5;
+    public static final int lArm1 = 5;
+    public static final int lArm2 = 4;
+    public static final int rArm1 = 7;
+    public static final int rArm2 = 8;
     
     /*
      * ### Compressor ###
@@ -54,10 +54,10 @@ public class Wiring {
     /*
      * Lights 
      */
-    public static final int lightDigitalOutPin1 = 4;
-    public static final int lightDigitalOutPin2 = 5;
-    public static final int lightDigitalOutPin3 = 6;
-    public static final int lightDigitalOutPin4 = 7;
-    public static final int lightPwmOutPin1 = 3;
-    public static final int lightPwmOutPin2 = 4;
+//    public static final int lightDigitalOutPin1 = 4;
+//    public static final int lightDigitalOutPin2 = 5;
+//    public static final int lightDigitalOutPin3 = 6;
+//    public static final int lightDigitalOutPin4 = 7;
+//    public static final int lightPwmOutPin1 = 3;
+//    public static final int lightPwmOutPin2 = 4;
 }

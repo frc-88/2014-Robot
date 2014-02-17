@@ -17,7 +17,7 @@ public abstract class CommandBase extends Command {
     public static Kicker kicker = new Kicker();
     private static Compressor compressor;
     private static int iterator = 0;
-    public static Lights lights = new Lights();
+//    public static Lights lights = new Lights();
     
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely

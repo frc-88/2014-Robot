@@ -10,7 +10,7 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class KickerAuto extends CommandBase {
     double timeout;
-    double power = -1;
+    double power = 1;
     public KickerAuto(double time) {
         super("kicker auto");
         requires(kicker);

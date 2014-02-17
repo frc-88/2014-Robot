@@ -11,7 +11,7 @@ package edu.wpi.first.wpilibj.templates.commands;
  */
 public class KickerFire extends CommandBase {
     
-    double power = -1;
+    double power = 1;
     boolean shouldKick;
     boolean done;
     
