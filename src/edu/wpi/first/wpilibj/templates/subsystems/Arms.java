@@ -15,18 +15,12 @@ public class Arms extends Subsystem {
     private final Solenoid rArmSolenoid2;
     private final Solenoid lArmSolenoid1;
     private final Solenoid lArmSolenoid2;
-    private final Solenoid armSolenoidRise;
-    private final Solenoid armSolenoidFall;
-    
     
     public Arms() {
         rArmSolenoid1 = new Solenoid(Wiring.rArm1);
         rArmSolenoid2 = new Solenoid(Wiring.rArm2);
         lArmSolenoid1 = new Solenoid(Wiring.lArm1);
         lArmSolenoid2 = new Solenoid(Wiring.lArm2);
-        armSolenoidRise = new Solenoid(Wiring.armRise);
-        armSolenoidFall = new Solenoid(Wiring.armFall);
-        
         ArmUp();
     }
     /**
@@ -39,10 +33,7 @@ public class Arms extends Subsystem {
         rArmSolenoid2.set(false);
         lArmSolenoid1.set(true);
         lArmSolenoid2.set(false);
-        armSolenoidRise.set(true);
-        armSolenoidFall.set(false);
            
-        SmartDashboard.putBoolean("arm solenoid rise ", armSolenoidRise.get());        
         SmartDashboard.putBoolean("r arm solenoid1", rArmSolenoid1.get());
         SmartDashboard.putBoolean("l arm solenoid1", lArmSolenoid1.get());
     }
@@ -56,11 +47,8 @@ public class Arms extends Subsystem {
         rArmSolenoid1.set(false);
         rArmSolenoid2.set(true);
         lArmSolenoid1.set(false);
-        lArmSolenoid2.set(true); 
-        armSolenoidRise.set(false);
-        armSolenoidFall.set(true);
-               
-        SmartDashboard.putBoolean("arm solenoid rise ", armSolenoidRise.get());
+        lArmSolenoid2.set(true);
+        
         SmartDashboard.putBoolean("r arm solenoid1", rArmSolenoid1.get());
         SmartDashboard.putBoolean("l arm solenoid1", lArmSolenoid1.get());
     }
