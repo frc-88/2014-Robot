@@ -35,7 +35,8 @@ public class Wiring {
     // encoder???
     // light sensor
     public static final int lightSensor = 14;
-
+    public static final double kickerPower = 1.0;
+    
     /*
      * ### Arms ###
      */

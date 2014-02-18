@@ -5,13 +5,15 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
+import edu.wpi.first.wpilibj.templates.Wiring;
+
 /**
  *
  * @author David
  */
 public class KickerFire extends CommandBase {
     
-    double power = 1;
+    double power = Wiring.kickerPower;
     boolean shouldKick;
     boolean done;
     

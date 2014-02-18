@@ -5,6 +5,8 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
+import edu.wpi.first.wpilibj.templates.Wiring;
+
 /**
  *
  * @author David
@@ -12,7 +14,7 @@ package edu.wpi.first.wpilibj.templates.commands;
 public class KickerArm extends CommandBase {
     
     boolean done;
-    double power = 1;
+    double power = Wiring.kickerPower;
     public KickerArm() {
         super("arming the kicker");
         requires(kicker);
