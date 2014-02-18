@@ -41,10 +41,10 @@ public class Wiring {
      * ### Arms ###
      */
     //wrong values
-    public static final int lArm1 = 5;
-    public static final int lArm2 = 4;
-    public static final int rArm1 = 7;
-    public static final int rArm2 = 8;
+    public static final int lArm1 = 4;  
+    public static final int lArm2 = 5;
+    public static final int rArm1 = 8;
+    public static final int rArm2 = 7;
     
     /*
      * ### Compressor ###
