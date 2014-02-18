@@ -4,13 +4,15 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
+import edu.wpi.first.wpilibj.templates.Wiring;
+
 /**
  *
  * @author TJ2
  */
 public class KickerAuto extends CommandBase {
     double timeout;
-    double power = 1;
+    double power = Wiring.kickerPower;
     public KickerAuto(double time) {
         super("kicker auto");
         requires(kicker);
