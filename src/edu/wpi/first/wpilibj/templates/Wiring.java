@@ -55,10 +55,13 @@ public class Wiring {
     /*
      * Lights 
      */
-//    public static final int lightDigitalOutPin1 = 4;
-//    public static final int lightDigitalOutPin2 = 5;
-//    public static final int lightDigitalOutPin3 = 6;
-//    public static final int lightDigitalOutPin4 = 7;
-//    public static final int lightPwmOutPin1 = 3;
-//    public static final int lightPwmOutPin2 = 4;
+    public static final int lightDigitalOutPin1 = 4;
+    public static final int lightDigitalOutPin2 = 5;
+    public static final int lightDigitalOutPin3 = 6;
+    public static final int lightDigitalOutPin4 = 7;
+    public static final int lightDigitalOutPinSecret = 8;
+    public static final int lightPwmOutPin1 = 3;
+    public static final int lightPwmOutPin2 = 4;
+    public static final int lightPwmOutPin3 = 5;
+    
 }
