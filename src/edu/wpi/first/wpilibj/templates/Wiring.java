@@ -51,13 +51,4 @@ public class Wiring {
     public static final int pressorSwitchChannel = 5;
     public static final int compressorSwitchChannel = 5;
     
-    /*
-     * Lights 
-     */
-    public static final int lightDigitalOutPin1 = 4;
-    public static final int lightDigitalOutPin2 = 5;
-    public static final int lightDigitalOutPin3 = 6;
-    public static final int lightDigitalOutPin4 = 7;
-    public static final int lightPwmOutPin1 = 3;
-    public static final int lightPwmOutPin2 = 4;
 }
