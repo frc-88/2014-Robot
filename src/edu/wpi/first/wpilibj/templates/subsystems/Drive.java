@@ -76,6 +76,9 @@ public class Drive extends Subsystem {
     public void driveTankOpenLoop(double left, double right) {        
         lPair.setX(left);
         rPair.setX(-right);
+        System.out.println("LPair speed " + lPair.getSpeed());
+        System.out.println("RPair speed " + rPair.getSpeed());
+        
     }
 
     /**
@@ -162,8 +165,8 @@ public class Drive extends Subsystem {
     }
     
     public void initDefaultCommand() {
-        setDefaultCommand(new DriveWithControllerSimple());
+        //setDefaultCommand(new DriveWithControllerSimple());
         //setDefaultCommand(new DrivewithControllerOpen());
-        //setDefaultCommand(new DriveWithControllerClosed());
+        setDefaultCommand(new DriveWithControllerClosed());
     }
 }

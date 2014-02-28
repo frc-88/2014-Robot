@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author TJ^2 Programming Team
  */
 public class JagPair implements PIDOutput {
-    private static final double P_DEFAULT = .05;
+    private static final double P_DEFAULT = .2;
     private static final double I_DEFAULT = 0.0;
     private static final double D_DEFAULT = 0.0;
-    private static final double f = 0.2;
+    private static final double f = 0.0;
     private static final double CYCLE_TIME = .020;
     private static final int DRIVE_ENCODER_LINES = 250;
     private static final double FEET_PER_REVOLUTION = 1.57;
@@ -64,6 +64,7 @@ public class JagPair implements PIDOutput {
             controller = new PIDController(p, i, d, f, encoder, this, CYCLE_TIME);
             // set the enable flag
             m_closedLoop = true;
+            resetDistance();
             controller.enable();
             System.out.println(name + " closed loop enabled.");
         }
@@ -98,10 +99,11 @@ public class JagPair implements PIDOutput {
      */
     public void setX(double x) {
         SmartDashboard.putNumber(name + " speed requested", x);
-        x = applyRampRate(x);
+        //x = applyRampRate(x);
         SmartDashboard.putNumber(name + " speed adjusted", x);
         jag1.set(x);
         jag2.set(x);
+        //System.out.println(name + " speed actual " + getSpeed());
     }
 
     /**
@@ -112,14 +114,18 @@ public class JagPair implements PIDOutput {
      */
     public void setSpeed(double speedIn, boolean isHighGear) {
         double maxSpeed = isHighGear ? MAX_SPEED_HIGH_GEAR : MAX_SPEED_LOW_GEAR;
-        double speed = applyRampRate(speedIn);
+        //double speed = applyRampRate(speedIn);
         
-        speed = speed * maxSpeed;
+        double speed = speedIn * maxSpeed;
 
         SmartDashboard.putNumber(name + " speed requested ", speedIn);
         SmartDashboard.putNumber(name + " speed actual ", getSpeed());
         SmartDashboard.putNumber(name + " new setpoint ", speed);
-
+        System.out.println(name + "Speed in " + speedIn);
+        System.out.println(name + "Speed actual " + getSpeed());
+        System.out.println(name + "new speed " + speed);
+        System.out.println(name + "setpoint " + controller.getSetpoint());
+        
         controller.setSetpoint(speed);
     }
 
