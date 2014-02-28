@@ -5,31 +5,31 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
-import edu.wpi.first.wpilibj.templates.commands.CommandBase;
-import edu.wpi.first.wpilibj.templates.subsystems.Camera;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.command.WaitCommand;
-import edu.wpi.first.wpilibj.templates.commands.CalculateHotGoal;
-import edu.wpi.first.wpilibj.templates.commands.DriveAutonomous;
 
 /**
  *
  * @author David
  */
-public class Autonomous extends CommandGroup {
+public class AutonomousTwoBall extends CommandGroup {
     
-    public Autonomous() {
-        addSequential(new ArmDown());
+    public AutonomousTwoBall() {
         //parameters for drive auto is speedleft, speedright, time, distance
-        addParallel(new DriveAutonomous(1,1,2,10));
+        addSequential(new DriveAutonomous(.2,.2,.5,10));//last is inches or feet?
  //       addSequential(new DriveAutonomous(0, 0, 0 ,0));
+        addSequential(new KickerAuto(2));
+        addParallel(new DriveAutonomous(.3,.3, 2,10));
+        //additional .5 seconds built in to armdown
+        //note sequential runs after first parallel component. Add wait before entering parallel.
+        addSequential(new ArmDown());
+        addParallel(new DriveAutonomous(.3,.3,3,10));
         addParallel(new KickerArm());
-        addParallel(new CalculateHotGoal(5));
-        addSequential(new WaitCommand(.25));
+        addParallel(new RollersAuto(3));
+        addSequential(new WaitCommand(3));
+        //additional .5 seconds built in to armup
         addSequential(new ArmUp());
-        addParallel(new WaitCommand(.5));
-        addSequential(new KickerAuto(3));
+        addSequential(new KickerAuto(2));
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

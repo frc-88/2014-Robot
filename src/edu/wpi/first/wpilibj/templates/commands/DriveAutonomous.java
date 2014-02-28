@@ -28,8 +28,8 @@ public class DriveAutonomous extends CommandBase {
         if(leftSpeed + rightSpeed < 0.0) {
             m_backwards = true;
         } 
-        m_speedLeft = leftSpeed;
-        m_speedRight = rightSpeed;
+        m_speedLeft = -leftSpeed;
+        m_speedRight = -rightSpeed;
         m_distance = Math.abs(distance);
         m_timeout = time;
     }
