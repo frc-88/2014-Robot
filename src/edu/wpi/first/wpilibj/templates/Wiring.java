@@ -15,10 +15,10 @@ public class Wiring {
     public static final int rightDrive = 8;
     public static final int rightDrive2 = 9;
     // encoders
-    public static final int lEncoderAChannel = 8;
-    public static final int lEncoderBChannel = 9;
-    public static final int rEncoderAChannel = 7;
-    public static final int rEncoderBChannel = 6;
+    public static final int lEncoderAChannel = 6;
+    public static final int lEncoderBChannel = 7;
+    public static final int rEncoderAChannel = 8;
+    public static final int rEncoderBChannel = 9;
     // shifters
     public static final int highShifter=3;
     public static final int lowShifter=2;
@@ -42,10 +42,10 @@ public class Wiring {
      * ### Arms ###
      */
     //wrong values
-    public static final int lArm1 = 4;  
-    public static final int lArm2 = 5;
-    public static final int rArm1 = 8;
-    public static final int rArm2 = 7;
+    public static final int lArm1 = 7;
+    public static final int lArm2 = 8;
+    public static final int rArm1 = 4;
+    public static final int rArm2 = 5;
     
     /*
      * ### Compressor ###
