@@ -17,9 +17,12 @@ public abstract class CommandBase extends Command {
     public static Kicker kicker = new Kicker();
     private static Compressor compressor;
     private static int iterator = 0;
-//    public static Lights lights = new Lights();
+    public static Lights lights;
     
     public static void init() {
+        if (Wiring.lights) {
+            lights = new Lights();
+        }
         // This MUST be here. If the OI creates Commands (which it very likely
         // will), constructing it during the construction of CommandBase (from
         // which commands extend), subsystems are not guaranteed to be
