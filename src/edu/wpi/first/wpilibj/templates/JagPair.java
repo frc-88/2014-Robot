@@ -117,7 +117,7 @@ public class JagPair implements PIDOutput {
         speed = speed * maxSpeed;
 
         SmartDashboard.putNumber(name + " speed requested ", speedIn);
-        SmartDashboard.putNumber(name + " speed actual ", getSpeed());
+        SmartDashboard.putNumber(name + " speed actual ", this.getSpeed());
         SmartDashboard.putNumber(name + " new setpoint ", speed);
 
         controller.setSetpoint(speed);

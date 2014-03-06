@@ -29,7 +29,7 @@ public class DriveAutonomous extends CommandBase {
             m_backwards = true;
         } 
         m_speedLeft = -leftSpeed;
-        m_speedRight = -rightSpeed;
+        m_speedRight = rightSpeed;
         m_distance = Math.abs(distance);
         m_timeout = time;
     }

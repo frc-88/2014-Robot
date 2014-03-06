@@ -64,7 +64,7 @@ public class Drive extends Subsystem {
      */
     public void driveTankClosedLoop(double speedLeft, double speedRight) {
         lPair.setSpeed(speedLeft, getGearing());
-        rPair.setSpeed(-speedRight, getGearing());
+        rPair.setSpeed(speedRight, getGearing());
     }
     
     /**
@@ -75,7 +75,7 @@ public class Drive extends Subsystem {
      */
     public void driveTankOpenLoop(double left, double right) {        
         lPair.setX(left);
-        rPair.setX(-right);
+        rPair.setX(right);
     }
 
     /**
@@ -133,7 +133,7 @@ public class Drive extends Subsystem {
     public boolean getFault() {
         return (lPair.getFault() || rPair.getFault());
     }
-    
+    +
     public void Shift() {
         //'gearing' is set to whatever state the shifting solenoids are currently in
         boolean gearing = m_LowShifter.get();
@@ -162,8 +162,8 @@ public class Drive extends Subsystem {
     }
     
     public void initDefaultCommand() {
-        setDefaultCommand(new DriveWithControllerSimple());
+        //setDefaultCommand(new DriveWithControllerSimple());
         //setDefaultCommand(new DrivewithControllerOpen());
-        //setDefaultCommand(new DriveWithControllerClosed());
+        setDefaultCommand(new DriveWithControllerClosed());
     }
 }
