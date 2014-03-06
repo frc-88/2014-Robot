@@ -133,7 +133,7 @@ public class Drive extends Subsystem {
     public boolean getFault() {
         return (lPair.getFault() || rPair.getFault());
     }
-    +
+
     public void Shift() {
         //'gearing' is set to whatever state the shifting solenoids are currently in
         boolean gearing = m_LowShifter.get();
