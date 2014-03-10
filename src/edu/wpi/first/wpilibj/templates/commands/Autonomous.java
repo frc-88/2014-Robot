@@ -21,8 +21,8 @@ public class Autonomous extends CommandGroup {
     
     public Autonomous() {
         addSequential(new ArmDown());
-        //parameters for drive auto is speedleft, speedright, distance, time
-        addParallel(new DriveAutonomous(1,1,10,2));//third is inches or feet?
+        //parameters for drive auto is speedleft, speedright, time, distance
+        addParallel(new DriveAutonomous(1,1,2,10));
  //       addSequential(new DriveAutonomous(0, 0, 0 ,0));
         addParallel(new KickerArm());
         addParallel(new CalculateHotGoal(5));

@@ -5,6 +5,7 @@ package edu.wpi.first.wpilibj.templates;
  * @author David
  */
 public class Wiring {
+    public static boolean lights = true;
     /*
      * ### Drive ###
      */
@@ -35,20 +36,33 @@ public class Wiring {
     // encoder???
     // light sensor
     public static final int lightSensor = 14;
-
+    public static final double kickerPower = 1.0;
+    
     /*
      * ### Arms ###
      */
     //wrong values
-    public static final int lArm1 = 7;
-    public static final int lArm2 = 8;
-    public static final int rArm1 = 4;
-    public static final int rArm2 = 5;
+    public static final int lArm1 = 4;  
+    public static final int lArm2 = 5;
+    public static final int rArm1 = 8;
+    public static final int rArm2 = 7;
     
     /*
      * ### Compressor ###
      */
     public static final int pressorSwitchChannel = 5;
     public static final int compressorSwitchChannel = 5;
+    
+    /*
+     * Lights 
+     */
+    public static final int lightDigitalOutPin1 = 4;
+    public static final int lightDigitalOutPin2 = 5;
+    public static final int lightDigitalOutPin3 = 6;
+    public static final int lightDigitalOutPin4 = 7;
+    public static final int lightDigitalOutPinSecret = 8;
+    public static final int lightPwmOutPin1 = 3;
+    public static final int lightPwmOutPin2 = 4;
+    public static final int lightPwmOutPin3 = 5;
     
 }
