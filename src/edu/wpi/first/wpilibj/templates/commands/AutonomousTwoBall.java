@@ -16,14 +16,19 @@ public class AutonomousTwoBall extends CommandGroup {
     
     public AutonomousTwoBall() {
         //parameters for drive auto is speedleft, speedright, time, distance
-        addSequential(new DriveAutonomous(.2,.2,.5,10));//last is inches or feet?
+        addSequential(new ArmDown());
+        addSequential(new DriveAutonomous(0.5,0.5,1.5,10));//last is inches or feet?
+        addSequential(new ArmUp());
+        System.out.println("First auto set done");
  //       addSequential(new DriveAutonomous(0, 0, 0 ,0));
-        addSequential(new KickerAuto(2));
-        addParallel(new DriveAutonomous(.3,.3, 2,10));
+        addSequential(new KickerAuto(1.8));
+        addParallel(new DriveAutonomous(0.5,0.5, 2.0 ,10));
+        System.out.println("second auto set done");
         //additional .5 seconds built in to armdown
         //note sequential runs after first parallel component. Add wait before entering parallel.
         addSequential(new ArmDown());
-        addParallel(new DriveAutonomous(.3,.3,3,10));
+        addParallel(new DriveAutonomous(1.0,1.0,1.0,10));
+        System.out.println("Third auto set done");
         addParallel(new KickerArm());
         addParallel(new RollersAuto(3));
         addSequential(new WaitCommand(3));
