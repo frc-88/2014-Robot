@@ -22,9 +22,11 @@ public class Drive extends Subsystem {
 
     private Solenoid m_LowShifter;
     private Solenoid m_HighShifter;
+    private static final double lowGearScaleFactor = 1;
+    private static final double highGearScaleFactor = .75;
     private JagPair lPair;
     private JagPair rPair;    
-    
+    private double scaleFactor = lowGearScaleFactor;
     public Drive() {
         lPair = new JagPair("left", Wiring.leftDrive, Wiring.leftDrive2,
                 Wiring.lEncoderAChannel, Wiring.lEncoderBChannel);
@@ -74,8 +76,8 @@ public class Drive extends Subsystem {
      * @param right joystick value passed in
      */
     public void driveTankOpenLoop(double left, double right) {        
-        lPair.setX(left);
-        rPair.setX(right);
+        lPair.setX(left * scaleFactor);
+        rPair.setX(right * scaleFactor);
     }
 
     /**
@@ -147,10 +149,12 @@ public class Drive extends Subsystem {
             //high
             m_LowShifter.set(false);
             m_HighShifter.set(true);
+            setScaleFactor(highGearScaleFactor);
         } else {
             //low
             m_HighShifter.set(false);
             m_LowShifter.set(true);
+            setScaleFactor(lowGearScaleFactor);
         }
         System.out.println("LShifter" + m_LowShifter.get());
         System.out.println("RShifter" + m_HighShifter.get());
@@ -160,10 +164,13 @@ public class Drive extends Subsystem {
     public boolean getGearing() {
         return m_HighShifter.get();
     }
+    public void setScaleFactor(double value) {
+        scaleFactor = value;
+    }
     
     public void initDefaultCommand() {
         //setDefaultCommand(new DriveWithControllerSimple());
-        //setDefaultCommand(new DrivewithControllerOpen());
-        setDefaultCommand(new DriveWithControllerClosed());
+        setDefaultCommand(new DrivewithControllerOpen());
+        //setDefaultCommand(new DriveWithControllerClosed());
     }
 }

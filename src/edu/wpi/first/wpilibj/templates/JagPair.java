@@ -98,7 +98,7 @@ public class JagPair implements PIDOutput {
      */
     public void setX(double x) {
         SmartDashboard.putNumber(name + " speed requested", x);
-        x = applyRampRate(x);
+        //x = applyRampRate(x);
         SmartDashboard.putNumber(name + " speed adjusted", x);
         jag1.set(x);
         jag2.set(x);
