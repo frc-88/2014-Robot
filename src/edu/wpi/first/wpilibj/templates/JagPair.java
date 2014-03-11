@@ -112,9 +112,9 @@ public class JagPair implements PIDOutput {
      */
     public void setSpeed(double speedIn, boolean isHighGear) {
         double maxSpeed = isHighGear ? MAX_SPEED_HIGH_GEAR : MAX_SPEED_LOW_GEAR;
-        double speed = applyRampRate(speedIn);
+        //double speed = applyRampRate(speedIn);
         
-        speed = speed * maxSpeed;
+        double speed = speedIn * maxSpeed;
 
         SmartDashboard.putNumber(name + " speed requested ", speedIn);
         SmartDashboard.putNumber(name + " speed actual ", getSpeed());
