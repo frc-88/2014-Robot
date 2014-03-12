@@ -5,7 +5,7 @@ package edu.wpi.first.wpilibj.templates;
  * @author David
  */
 public class Wiring {
-    public static boolean lights = true;
+    public static boolean lights = false;
     /*
      * ### Drive ###
      */

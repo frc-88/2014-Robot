@@ -21,7 +21,7 @@ public class JagPair implements PIDOutput {
     //feet per revolution over encoder lines
     private static final double DISTANCE_PER_PULSE = FEET_PER_REVOLUTION / DRIVE_ENCODER_LINES;
     private static final int SAMPLES_TO_AVERAGE = 6;
-    private static final double RAMP_RATE = 0.1;
+    private static final double RAMP_RATE = 0.05;
     private static final double MAX_SPEED_HIGH_GEAR = 12.4; // feet per second
     private static final double MAX_SPEED_LOW_GEAR = 5.2;   // feet per second
 
@@ -99,7 +99,7 @@ public class JagPair implements PIDOutput {
      */
     public void setX(double x) {
         SmartDashboard.putNumber(name + " speed requested", x);
-        //x = applyRampRate(x);
+        x = applyRampRate(x);
         SmartDashboard.putNumber(name + " speed adjusted", x);
         jag1.set(x);
         jag2.set(x);

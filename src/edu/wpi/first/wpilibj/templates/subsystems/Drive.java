@@ -23,7 +23,7 @@ public class Drive extends Subsystem {
     private Solenoid m_LowShifter;
     private Solenoid m_HighShifter;
     private static final double lowGearScaleFactor = 1;
-    private static final double highGearScaleFactor = .75;
+    private static final double highGearScaleFactor = .6;
     private JagPair lPair;
     private JagPair rPair;    
     

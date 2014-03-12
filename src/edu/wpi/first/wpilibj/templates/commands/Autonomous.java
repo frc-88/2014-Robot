@@ -20,16 +20,20 @@ import edu.wpi.first.wpilibj.templates.commands.DriveAutonomous;
 public class Autonomous extends CommandGroup {
     
     public Autonomous() {
-        addSequential(new ArmDown());
+//        addSequential(new ArmDown());
         //parameters for drive auto is speedleft, speedright, time, distance
-        addParallel(new DriveAutonomous(1,1,2,10));
+//        addParallel(new DriveAutonomous(1,1,2,10));
  //       addSequential(new DriveAutonomous(0, 0, 0 ,0));
-        addParallel(new KickerArm());
-        addParallel(new CalculateHotGoal(5));
-        addSequential(new WaitCommand(.25));
-        addSequential(new ArmUp());
-        addParallel(new WaitCommand(.5));
+//        addParallel(new KickerArm());
+//        addParallel(new CalculateHotGoal(5));
+//        addSequential(new WaitCommand(.25));
+//        addSequential(new ArmUp());
+//        addParallel(new WaitCommand(.5));
+        addSequential(new WaitCommand(1));
+        addSequential(new CalculateHotGoal(4));
         addSequential(new KickerAuto(3));
+        addSequential(new ArmDown());
+        addSequential(new DriveAutonomous(.5,.5,1.5,8));
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
