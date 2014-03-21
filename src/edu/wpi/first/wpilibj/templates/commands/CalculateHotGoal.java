@@ -28,7 +28,7 @@ public class CalculateHotGoal extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if (count % 50 == 0) {
+        if (count % 15 == 0) {
             camera.grabImage();
             done = camera.findHotGoal();
         }

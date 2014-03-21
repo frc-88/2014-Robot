@@ -270,7 +270,7 @@ public class Camera extends Subsystem {
         try {
             ColorImage image = camera.getImage();
             if (image != null) {
-                // comment if using stored images
+                // comment if using stored imagesc  ``
                 //ColorImage image;                           // next 2 lines read image from flash on cRIO
                 //image = new RGBImage("/testImage.jpg");		// get the sample image from the cRIO flash
                 BinaryImage thresholdImage = image.thresholdHSV(HUE_MIN, HUE_MAX, SAT_MIN, SAT_MAX, VAL_MIN, VAL_MAX);   // keep only green objects
@@ -577,6 +577,7 @@ public class Camera extends Subsystem {
                     } else {
                         System.out.println("No vertical target found");
                     }
+                    //SmartDashboard.putNumber("Camera distance, " , distance);
                 }
 
                 /**

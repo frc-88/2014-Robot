@@ -34,6 +34,7 @@ public abstract class CommandBase extends Command {
         compressor.start();
         System.out.println("command base init finished");
         SmartDashboard.putData(drive);
+        //SmartDashboard.putData(camera);
 //        SmartDashboard.putData(roller);
 //        SmartDashboard.putData(arm);
         //SmartDashboard.putData(camera);

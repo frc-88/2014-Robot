@@ -15,10 +15,10 @@ public class Wiring {
     public static final int rightDrive = 8;
     public static final int rightDrive2 = 9;
     // encoders
-    public static final int lEncoderAChannel = 6;
-    public static final int lEncoderBChannel = 7;
-    public static final int rEncoderAChannel = 8;
-    public static final int rEncoderBChannel = 9;
+    public static final int lEncoderAChannel = 8;
+    public static final int lEncoderBChannel = 9;
+    public static final int rEncoderAChannel = 6;
+    public static final int rEncoderBChannel = 7;
     // shifters
     public static final int highShifter=3;
     public static final int lowShifter=2;

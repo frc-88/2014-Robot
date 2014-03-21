@@ -11,17 +11,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author TJ^2 Programming Team
  */
 public class JagPair implements PIDOutput {
-    private static final double P_DEFAULT = .2;
+    private static final double P_DEFAULT = 0.0;
     private static final double I_DEFAULT = 0.0;
     private static final double D_DEFAULT = 0.0;
-    private static final double f = 0.0;
+    private static final double f = 5.2;
     private static final double CYCLE_TIME = .020;
     private static final int DRIVE_ENCODER_LINES = 250;
     private static final double FEET_PER_REVOLUTION = 1.57;
     //feet per revolution over encoder lines
     private static final double DISTANCE_PER_PULSE = FEET_PER_REVOLUTION / DRIVE_ENCODER_LINES;
     private static final int SAMPLES_TO_AVERAGE = 6;
-    private static final double RAMP_RATE = 0.05;
+    private static final double RAMP_RATE = 0.1;
     private static final double MAX_SPEED_HIGH_GEAR = 12.4; // feet per second
     private static final double MAX_SPEED_LOW_GEAR = 5.2;   // feet per second
 
@@ -99,8 +99,10 @@ public class JagPair implements PIDOutput {
      */
     public void setX(double x) {
         SmartDashboard.putNumber(name + " speed requested", x);
-        x = applyRampRate(x);
+        //untested may break it
+        //x = applyRampRate(x);
         SmartDashboard.putNumber(name + " speed adjusted", x);
+        SmartDashboard.putNumber(name + "encoder distance ", encoder.getDistance());
         jag1.set(x);
         jag2.set(x);
         //System.out.println(name + " speed actual " + getSpeed());
@@ -118,13 +120,14 @@ public class JagPair implements PIDOutput {
         
         double speed = speedIn * maxSpeed;
 
-        SmartDashboard.putNumber(name + " speed requested ", speedIn);
+        SmartDashboard.putNumber(name + " speed requested ", speed);
         SmartDashboard.putNumber(name + " speed actual ", getSpeed());
         SmartDashboard.putNumber(name + " new setpoint ", speed);
-        System.out.println(name + "Speed in " + speedIn);
-        System.out.println(name + "Speed actual " + getSpeed());
-        System.out.println(name + "new speed " + speed);
-        System.out.println(name + "setpoint " + controller.getSetpoint());
+        System.out.println(name + encoder.getRaw());
+        //System.out.println(name + "Speed in " + speedIn);
+        //System.out.println(name + "Speed actual " + getSpeed());
+        //System.out.println(name + "new speed " + speed);
+        //System.out.println(name + "setpoint " + controller.getSetpoint());
         
         controller.setSetpoint(speed);
     }
@@ -148,7 +151,11 @@ public class JagPair implements PIDOutput {
     }
 
     public double getDistance() {
-        return encoder.getDistance();
+        double distance = encoder.getDistance();
+        
+        System.out.println(name + " distance = " + distance);
+        
+        return distance;
     }
 
     /**
