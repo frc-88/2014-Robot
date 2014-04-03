@@ -8,7 +8,7 @@ package edu.wpi.first.wpilibj.templates.commands;
  *
  * @author David and minions
  */
-public class DriveAutonomous extends CommandBase {
+public class DriveAutonomousLowP extends CommandBase {
     
     private double m_speedLeft;
     private double m_speedRight;
@@ -16,7 +16,7 @@ public class DriveAutonomous extends CommandBase {
     private double m_distance;
     private boolean m_backwards = false;
     
-    public DriveAutonomous(double leftSpeed, double rightSpeed, double time, double distance) {
+    public DriveAutonomousLowP(double leftSpeed, double rightSpeed, double time, double distance) {
         
         super("DriveClosed(" + leftSpeed + ", " + rightSpeed + ", " + time + ", " + distance +")");
 
@@ -42,7 +42,7 @@ public class DriveAutonomous extends CommandBase {
     protected void initialize() {
         double currentDistance;
         
-        drive.enableClosedLoop();
+        drive.enableClosedLoop(-.02,0,0);
         drive.resetDistance();
         currentDistance = drive.getAverageDistance();
         if(m_backwards) {

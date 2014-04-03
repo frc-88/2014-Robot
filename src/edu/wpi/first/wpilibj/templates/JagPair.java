@@ -11,13 +11,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author TJ^2 Programming Team
  */
 public class JagPair implements PIDOutput {
-    private static final double P_DEFAULT = 0.0;
+    //-.5
+    private static final double P_DEFAULT = -.2;
     private static final double I_DEFAULT = 0.0;
     private static final double D_DEFAULT = 0.0;
-    private static final double f = 5.2;
+    private static final double f = -0.5;
     private static final double CYCLE_TIME = .020;
     private static final int DRIVE_ENCODER_LINES = 250;
-    private static final double FEET_PER_REVOLUTION = 1.57;
+    //actual is 1.57
+    private static final double FEET_PER_REVOLUTION = 2;
     //feet per revolution over encoder lines
     private static final double DISTANCE_PER_PULSE = FEET_PER_REVOLUTION / DRIVE_ENCODER_LINES;
     private static final int SAMPLES_TO_AVERAGE = 6;
@@ -102,6 +104,7 @@ public class JagPair implements PIDOutput {
         //untested may break it
         //x = applyRampRate(x);
         SmartDashboard.putNumber(name + " speed adjusted", x);
+        SmartDashboard.putNumber(name + "encoder raw ", encoder.getRaw());
         SmartDashboard.putNumber(name + "encoder distance ", encoder.getDistance());
         jag1.set(x);
         jag2.set(x);
@@ -124,6 +127,9 @@ public class JagPair implements PIDOutput {
         SmartDashboard.putNumber(name + " speed actual ", getSpeed());
         SmartDashboard.putNumber(name + " new setpoint ", speed);
         System.out.println(name + encoder.getRaw());
+        System.out.println("speed requested " + speed);
+        System.out.println("speed acutal " + getSpeed());
+        
         //System.out.println(name + "Speed in " + speedIn);
         //System.out.println(name + "Speed actual " + getSpeed());
         //System.out.println(name + "new speed " + speed);
@@ -157,6 +163,7 @@ public class JagPair implements PIDOutput {
         
         return distance;
     }
+    
 
     /**
      * Reset the encoders to 0

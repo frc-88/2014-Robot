@@ -24,11 +24,21 @@ public class Autonomous extends CommandGroup {
         //parameters for drive auto is speedleft, speedright, time, distance
         //addSequential(new WaitCommand(1));
         //addSequential(new ArmDown());
-        addSequential(new DriveAutonomous(.5,.5,.9,8));
-        addSequential(new WaitCommand(.5));
-        //addSequential(new ArmUp());
-        addSequential(new CalculateHotGoal(3));
+        addSequential(new DriveAutonomous(.35,.35,10,4.8));
+        addSequential(new DriveAutonomousLowP(0,0,1,5));
+        //addParallel(new CalculateHotGoal(1));
         addSequential(new KickerAuto(2));
+        
+        //addSequential(new DriveAutonomous(0,0,.5,1));
+        //addSequential(new DriveAutonomous(.25,.25,4,3.5));
+        //addSequential(new DriveAutonomous(.15, .15, 1, 1));
+        //addSequential(new DriveAutonomous(.5, .5, 1, .5));
+        
+        //addSequential(new DriveAutonomous(0,0,.01.01));
+        //addSequential(new WaitCommand(.5));
+        //addSequential(new ArmUp());
+        //
+
         //addSequential(new DriveAutonomous(.6,.6,.5,8));
         //addSequential(new ArmDown());
         //addSequential(new DriveAutonomous(.5,.5,1.0 ,8));

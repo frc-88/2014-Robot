@@ -5,6 +5,7 @@
 package edu.wpi.first.wpilibj.templates.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.templates.subsystems.Lights;
 
 /**
  *
@@ -23,24 +24,28 @@ public class LightsDefault extends CommandBase {
         if (DriverStation.getInstance().getAlliance() == DriverStation.Alliance.kBlue) {
                 // We're in auto and we're on the blue alliance.
                 lights.setRedAlliance(false);
-                lights.setSecret(false);
             }
             else {
                 // Otherwise, we must be on the red alliance.
                 lights.setRedAlliance(true);
-                lights.setSecret(true);
             }
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         if (DriverStation.getInstance().isAutonomous()) {
-            lights.setMode(lights.MODE_AUTONOMOUS);
+            lights.setMode(Lights.MODE_AUTONOMOUS);
         } else if (DriverStation.getInstance().isOperatorControl()) {
             // We're in teleop
-            lights.setMode(lights.MODE_DRIVE_FILL);
-            lights.setAnalog(lights.ANALOG_CHANNEL_LEFT, drive.getLeftSpeed()/80.0);
-            lights.setAnalog(lights.ANALOG_CHANNEL_RIGHT, drive.getRightSpeed()/80.0);
+            lights.setMode(Lights.MODE_DRIVE_FILL);
+            //high
+            if (drive.getGearing()) {
+                lights.setAnalog(Lights.ANALOG_CHANNEL_LEFT, drive.getLeftSpeed()/12.4);
+                lights.setAnalog(Lights.ANALOG_CHANNEL_RIGHT, drive.getRightSpeed()/12.4);
+            } else {
+                lights.setAnalog(Lights.ANALOG_CHANNEL_LEFT, drive.getLeftSpeed()/5.2);
+                lights.setAnalog(Lights.ANALOG_CHANNEL_RIGHT, drive.getRightSpeed()/5.2);    
+            }
 //            if (kicker.firing) {
 //                lights.setMode(lights.MODE_SECRET);
 //            }
@@ -49,12 +54,7 @@ public class LightsDefault extends CommandBase {
 //            }
         } else if (DriverStation.getInstance().isDisabled()) {
             // We're disabled.  This should trigger at the end of the match.
-            lights.setMode(lights.MODE_BLINKY);
-        }
-        if (kicker.ReturnLightSensorValue() == true) {
-            lights.setKickerArmed(true);
-        } else{
-            lights.setKickerArmed(false);  
+            lights.setMode(Lights.MODE_BLINKY);
         }
     }
 

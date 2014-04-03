@@ -4,7 +4,6 @@
  */
 package edu.wpi.first.wpilibj.templates.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,27 +18,18 @@ public class Lights extends Subsystem {
     private int activeMode = 0;
     private double leftAnalogOutput = 0.0;
     private double rightAnalogOutput = 0.0;
-    private double autoState = 0.0;
-    private boolean kickerArmed = false;
     private boolean redAlliance = false;
-    private boolean p = false;
-    
     
     private static final double ANALOG_LOWER_THRESHHOLD = -1.0;
     private static final double ANALOG_UPPER_THRESHHOLD = 1.0;
-    private static final double AUTOSTATE_MAX = 10.0;
 
     private DigitalOutput digitalOut1;
     private DigitalOutput digitalOut2;
     private DigitalOutput digitalOut3;
-    private DigitalOutput digitalOut4;
-    private DigitalOutput digitalOutSecret;
     // We aren't actually using Jags, but this gives us an easy way
     // to control PWM outputs.
     private Jaguar pwmOut1;
     private Jaguar pwmOut2;
-    private Jaguar pwmOut3;
-    
     
     public static final int MODE_BLINKY = 0;
     public static final int MODE_AUTONOMOUS = 1;
@@ -52,13 +42,10 @@ public class Lights extends Subsystem {
     public Lights() {
         digitalOut1 = new DigitalOutput(Wiring.lightDigitalOutPin1);
         digitalOut2 = new DigitalOutput(Wiring.lightDigitalOutPin2);
-        digitalOut3 = new DigitalOutput(Wiring.lightDigitalOutPin3);
-        digitalOut4 = new DigitalOutput(Wiring.lightDigitalOutPin4);
-        digitalOutSecret = new DigitalOutput(Wiring.lightDigitalOutPinSecret);
+        digitalOut3 = new DigitalOutput(Wiring.lightDigitalOutPin4);
         
         pwmOut1 = new Jaguar(Wiring.lightPwmOutPin1);
         pwmOut2 = new Jaguar(Wiring.lightPwmOutPin2);
-        pwmOut3 = new Jaguar(Wiring.lightPwmOutPin3);
         
     }
     
@@ -73,16 +60,13 @@ public class Lights extends Subsystem {
         //doing 5 bits whine later
         digitalOut1.set((activeMode & 1) == 1);
         digitalOut2.set(((activeMode >> 1) & 1) == 1);
-        digitalOut3.set(kickerArmed);
-        digitalOut4.set(redAlliance);
-        digitalOutSecret.set(p);
+        digitalOut3.set(redAlliance);
         // Also need to set the analog outputs
         // OH GOD I THINK WE CAN ONLY DO ANALOG INPUTS OH GOD NO
         // MikeE: we can use the PWM output and pass it through a simple RC filter to give us an analog signal
         // I checked the rules and there's nothing to say that PWM can only go to servo/motor controller
         pwmOut1.set(leftAnalogOutput);
         pwmOut2.set(rightAnalogOutput);
-        pwmOut3.set(autoState);
     }
     
     public void setMode(int mode) {
@@ -116,23 +100,7 @@ public class Lights extends Subsystem {
         // a 1.0 PWM has a pulse width of 2.29 ms
     }
     
-    public void setAutoState(int value) {
-        // use the magic "? :" operator to limit the range of "value" Look it up David :)
-        autoState = (autoState < 0)? 0: autoState;
-        autoState = (autoState < AUTOSTATE_MAX)? autoState: AUTOSTATE_MAX;
-        
-        autoState = value/AUTOSTATE_MAX;
-        updateOutput();
-    }
-    
-    
-    public void setKickerArmed(boolean value) {
-        kickerArmed = value;
-    }
     public void setRedAlliance(boolean value) {
         redAlliance = value;
-    }
-    public void setSecret(boolean value) {
-        p = value;
     }
 }

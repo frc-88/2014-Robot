@@ -23,7 +23,7 @@ public class Drive extends Subsystem {
     private Solenoid m_LowShifter;
     private Solenoid m_HighShifter;
     private static final double lowGearScaleFactor = 1;
-    private static final double highGearScaleFactor = .6;
+    private static final double highGearScaleFactor = 1;
     private JagPair lPair;
     private JagPair rPair;    
     
@@ -49,6 +49,11 @@ public class Drive extends Subsystem {
         rPair.enableClosedLoop();
 //        lPair.enableClosedLoop(leftP, leftI, leftD);
 //        rPair.enableClosedLoop(rightP, rightI, rightD);
+    }
+    public void enableClosedLoop(double p , double i, double d) {
+        lPair.enableClosedLoop(p, i, d);
+        rPair.enableClosedLoop(p, i, d);
+        
     }
 
     /**
@@ -121,7 +126,7 @@ public class Drive extends Subsystem {
      * @return Total distance traveled by wheels in inches
      */
     public double getAverageDistance() {
-        return (getLeftDistance() + getRightDistance()) / 2.0;
+        return (Math.abs(getLeftDistance()) + Math.abs(getRightDistance())) / 2.0;
     }
 
     /**
